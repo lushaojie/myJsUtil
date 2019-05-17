@@ -740,6 +740,44 @@ $t.getSelectPageTxt = function (){
 		return window.getSelection().toString();  // 标准
 	}
 }
+/*
+保留小数位的处理函数(比 toFixed 更好用)
+	注意：
+	参数：
+		num : [Number] 目标数字,
+		dig : [Number] 保留几位小数 (默认2)
+		mo : [Number]  模式：1-四舍五入，2-向下取整，3-向上取整（默认1）
+ 	返回值：[Number]
+ * */
+$t.dealDecimal = function (num,dig,mo){
+	if(!num){
+		console.error('num 无效!');
+		return;
+	}
+	if(typeof(num) != 'number' && isNaN(Number(num))){
+		console.error('num 不是一个数字!');
+		return;
+	}
+	dig = dig || 2;
+	mo = mo || 1;
+	var i = Math.pow(10,dig);
+	switch (mo) {
+		case 1:
+			num = Math.round(num * i) / i;
+			break;
+		case 2:
+			num = Math.floor(num * i) / i;
+			break;
+		case 3:
+			num = Math.ceil(num * i) / i;
+			break;
+		default:
+			console.error('mo 无效!');
+			break;
+	}
+	
+	return num;
+};
 
 
 
