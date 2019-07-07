@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-<script src="customTools.js"></script>
-<script>
-    
-</script>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Document</title>
+	</head>
+
+	<body>
+
+	</body>
+	<script src="customTools.js"></script>
+	<script>
+		getStr("aabbcccdddeccccccceeeffaaa");
+		let res = $t.getMaxFromStr("aabbcccdddeeccccccceeffaaa");
+		console.log(res)
+		function getStr(str) {
+			let arr = str.split('');
+			let obj = {};
+			let max = 0;
+			let moreKey = arr[0];
+			arr.forEach((item, index) => {
+				if(obj[item]) {
+					obj[item]++;
+				} else {
+					obj[item] = 1;
+				}
+				if(max < obj[item]) {
+					max = obj[item];
+					moreKey = item;
+				}
+
+			})
+
+			console.log(`出现次数最多的是：${moreKey},出现了：${max}次`);
+		}
+	</script>
+
 </html>

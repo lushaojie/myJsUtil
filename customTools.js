@@ -9,26 +9,28 @@ var $t = {};
  		
  	返回值：[Object, 类数组, Array]  ie低版本返回的是 数组 而不是类数组
  * */
-$t.getEle = function (v,oParent){
-	if(typeof(v) !== 'string'){return;}
+$t.getEle = function(v, oParent) {
+	if(typeof(v) !== 'string') {
+		return;
+	}
 	oParent = oParent || document;
-	var type = v.substr(0,1),
-			name = v.substr(1),
-			res = null;
-	switch (type){
+	var type = v.substr(0, 1),
+		name = v.substr(1),
+		res = null;
+	switch(type) {
 		case '#':
 			res = document.getElementById(name);
 			break;
 		case '.':
-			if(document.getElementsByClassName){
+			if(document.getElementsByClassName) {
 				res = oParent.getElementsByClassName(name);
-			}else{
+			} else {
 				// 兼容 ie 低版本
 				var aEle = oParent.getElementsByTagName('*'); // 先获取父级元素中所有的dom元素
 				res = [];
-				for(var i = 0; i < aEle.length; i++){
+				for(var i = 0; i < aEle.length; i++) {
 					// 判断元素中是否含有 对应的class类名
-					if($t.hasClass(aEle[i],name)){
+					if($t.hasClass(aEle[i], name)) {
 						res.push(aEle[i]);
 					}
 				}
@@ -50,19 +52,19 @@ $t.getEle = function (v,oParent){
  		
  	返回值：[Object]
  * */
-$t.getParentEle = function(ele,p){
-	while(ele && p){
+$t.getParentEle = function(ele, p) {
+	while(ele && p) {
 		ele = ele.parentNode;
-		
-		if(ele && ele.nodeType == 1){
-			if(typeof(p) == 'string'){
-				if($t.hasClass(ele,p)){
+
+		if(ele && ele.nodeType == 1) {
+			if(typeof(p) == 'string') {
+				if($t.hasClass(ele, p)) {
 					return ele;
 				}
-			}else{
+			} else {
 				p--;
 			}
-		}else if(!ele){
+		} else if(!ele) {
 			return ele;
 		}
 	}
@@ -75,13 +77,15 @@ $t.getParentEle = function(ele,p){
  		
  	返回值：[Array]
  * */
-$t.getChildren = function (tag){
-	if(!tag){return;} // 容错
+$t.getChildren = function(tag) {
+	if(!tag) {
+		return;
+	} // 容错
 	var childs = tag.childNodes,
-			leng = childs.length,
-			arr = [];
-	for (var i = 0; i < leng; i++) {
-		if(childs[i].nodeType == 1){
+		leng = childs.length,
+		arr = [];
+	for(var i = 0; i < leng; i++) {
+		if(childs[i].nodeType == 1) {
 			arr.push(childs[i])
 		}
 	}
@@ -96,24 +100,24 @@ $t.getChildren = function (tag){
 		
 	返回值：[Object]
  * */
-$t.getSiblings = function (e,n){
-	while (e && n){
-		if(n > 0){
-			if(e.nextElementSibling){
+$t.getSiblings = function(e, n) {
+	while(e && n) {
+		if(n > 0) {
+			if(e.nextElementSibling) {
 				e = e.nextElementSibling;
-			}else{
+			} else {
 				// 兼容ie9及以下浏览器
 				for(e = e.nextSibling; e && e.nodeType != 1; e = e.nextSibling);
 			}
 			n--;
-		}else{
-			if(e.previousElementSibling){
+		} else {
+			if(e.previousElementSibling) {
 				e = e.previousElementSibling;
-			}else{
+			} else {
 				// 兼容ie9及以下浏览器
 				for(e = e.previousSibling; e && e.nodeType != 1; e = e.previousSibling);
-			}			
-			n ++;
+			}
+			n++;
 		}
 	}
 	return e;
@@ -129,19 +133,21 @@ $t.getSiblings = function (e,n){
  	待改善：
  		可以用一行正则做到 参见 miaov-延迟菜单 案例
  * */
-$t.hasClass = function (tag,classStr){
-	if(!tag){return;} // 容错
+$t.hasClass = function(tag, classStr) {
+	if(!tag) {
+		return;
+	} // 容错
 	var reg = new RegExp('\\b' + classStr + '\\b');
 	return reg.test(tag.className);
-//	 var arr = tag.className.split(/\s+/),  //这个正则表达式是因为class可以有多个,判断是否包含
-//	 		leng = arr.length;
-//	 	// 用数组的方式做判断是为了防止有类似 a aa aaa 的类名的情况
-//  for (var i = 0;i < leng;i++){
-//      if (arr[i] == classStr){
-//          return true ;
-//      }
-//  }
-//  return false;
+	//	 var arr = tag.className.split(/\s+/),  //这个正则表达式是因为class可以有多个,判断是否包含
+	//	 		leng = arr.length;
+	//	 	// 用数组的方式做判断是为了防止有类似 a aa aaa 的类名的情况
+	//  for (var i = 0;i < leng;i++){
+	//      if (arr[i] == classStr){
+	//          return true ;
+	//      }
+	//  }
+	//  return false;
 };
 /*
 元素的class类名替换（考虑最周全，兼容所有浏览器的方法）(也可用于删除某项class类名)
@@ -152,18 +158,20 @@ $t.hasClass = function (tag,classStr){
  		
  	返回值：无
  * */
-$t.replaceClass = function (tag,oldStr,newStr){
-	if(!tag){return;} // 容错
-	var arr = tag.className.split(/\s+/),  //这个正则表达式是因为class可以有多个,判断是否包含
-			leng = arr.length;
-		// 用数组的方式做判断是为了防止有类似 a aa aaa 的类名的情况
-  for (var i = 0;i < leng;i++){
-      if (arr[i] == oldStr){
-          arr[i] = newStr;
-          break;
-      }
-  }
-  tag.className = arr.join(' ');
+$t.replaceClass = function(tag, oldStr, newStr) {
+	if(!tag) {
+		return;
+	} // 容错
+	var arr = tag.className.split(/\s+/), //这个正则表达式是因为class可以有多个,判断是否包含
+		leng = arr.length;
+	// 用数组的方式做判断是为了防止有类似 a aa aaa 的类名的情况
+	for(var i = 0; i < leng; i++) {
+		if(arr[i] == oldStr) {
+			arr[i] = newStr;
+			break;
+		}
+	}
+	tag.className = arr.join(' ');
 };
 /*
  获取浏览器计算后的dom元素样式：
@@ -178,10 +186,12 @@ $t.replaceClass = function (tag,oldStr,newStr){
  		pseudo [String] 伪元素  （传此参数可获取伪元素的样式 ，ie9以下不支持,默认 null）
  	返回值：[String]
  * */
-$t.getStyle = function (ele,prop,pseudo){
-	if(!ele){return;}
+$t.getStyle = function(ele, prop, pseudo) {
+	if(!ele) {
+		return;
+	}
 	pseudo = pseudo || null;
-	return window.getComputedStyle ? getComputedStyle(ele,pseudo)[prop] : ele.currentStyle[prop];
+	return window.getComputedStyle ? getComputedStyle(ele, pseudo)[prop] : ele.currentStyle[prop];
 };
 /*
 生成一个由随机的字符串
@@ -197,30 +207,38 @@ $t.getStyle = function (ele,prop,pseudo){
 			4 -> 只有中文（目前还不能把繁体字和简体字区分出来）
 	返回值：[String]
  * */
-$t.createRandomStr = function (leng,typeNum){
+$t.createRandomStr = function(leng, typeNum) {
 	var num = 97,
-			str = '',
-			startNum = 0,
-			endNum = 40869;
+		str = '',
+		startNum = 0,
+		endNum = 40869;
 	leng = leng === undefined ? 10 : leng; // 默认长度是 10
 	// 判断需要的类型
-	if(typeNum){
-		var arr = ['',[48,57],[97,122],[65,90],[19968,40869]];
+	if(typeNum) {
+		var arr = ['', [48, 57],
+			[97, 122],
+			[65, 90],
+			[19968, 40869]
+		];
 		startNum = arr[typeNum][0];
 		endNum = arr[typeNum][1];
 	}
-	
-	for (var i = 0; i < leng; i++) {
+
+	for(var i = 0; i < leng; i++) {
 		// 0 的情况 数字 、小写字母、大写字母
-		if(typeNum == 0){
-			var arr = [[48,57],[97,122],[65,90]];
-			var indexNum = $t.randomBasedSection(0,2);
+		if(typeNum == 0) {
+			var arr = [
+				[48, 57],
+				[97, 122],
+				[65, 90]
+			];
+			var indexNum = $t.randomBasedSection(0, 2);
 			startNum = arr[indexNum][0];
 			endNum = arr[indexNum][1];
 		}
-		
-		num = $t.randomBasedSection(startNum,endNum); // 生成一个指定区域的随机数
-		str += String.fromCharCode(num);   // 根据传入的Unicode编码生成对应的字符，可传多个值
+
+		num = $t.randomBasedSection(startNum, endNum); // 生成一个指定区域的随机数
+		str += String.fromCharCode(num); // 根据传入的Unicode编码生成对应的字符，可传多个值
 	}
 	return str;
 };
@@ -231,8 +249,8 @@ $t.createRandomStr = function (leng,typeNum){
 		big [Number]* 最大值
 	返回值：[Number]
  * */
-$t.randomBasedSection = function (small,big){
-	return Math.round(Math.random()*(big - small) + small);
+$t.randomBasedSection = function(small, big) {
+	return Math.round(Math.random() * (big - small) + small);
 };
 /*
 获取一个字符 在另一个字符串中所出现的位置集合
@@ -241,12 +259,12 @@ $t.randomBasedSection = function (small,big){
 		parentStr [String]* 基于的字符
 	返回值：[Array]
  * */
-$t.getIndexofArr = function (sonStr,parentStr){
+$t.getIndexofArr = function(sonStr, parentStr) {
 	var i = 0,
-			arr = [];
-	while(parentStr.indexOf(sonStr,i) != -1){
-		arr.push(parentStr.indexOf(sonStr,i));
-		i = parentStr.indexOf(sonStr,i) + sonStr.length;
+		arr = [];
+	while(parentStr.indexOf(sonStr, i) != -1) {
+		arr.push(parentStr.indexOf(sonStr, i));
+		i = parentStr.indexOf(sonStr, i) + sonStr.length;
 	}
 	return arr;
 };
@@ -260,44 +278,44 @@ $t.getIndexofArr = function (sonStr,parentStr){
 										如果想要更改，请搜索 '颜色取值范围' 关键字 去改源码
 	返回值：[String]
  * */
-$t.randomColor = function (clarityP,avoidP){
-	if(!clarityP && clarityP != 0){
+$t.randomColor = function(clarityP, avoidP) {
+	if(!clarityP && clarityP != 0) {
 		clarityP = 1;
 	}
-	let r = $t.randomBasedSection(0,255);
-	let g = $t.randomBasedSection(0,255);
-	let b = $t.randomBasedSection(0,255);
+	let r = $t.randomBasedSection(0, 255);
+	let g = $t.randomBasedSection(0, 255);
+	let b = $t.randomBasedSection(0, 255);
 	let res = r + ',' + g + ',' + b;
 	// 是否要回避某个色值
-	if(avoidP){
+	if(avoidP) {
 		let arr = avoidP.split(',');
-		
-		let minN = (arr[2] - 55) <= 0 ? 0 : (arr[2] - 55);     // 最小接近值
-		let maxN = (arr[2] + 55) >= 255 ? 255 : (arr[2] + 55);  // 最大接近值
+
+		let minN = (arr[2] - 55) <= 0 ? 0 : (arr[2] - 55); // 最小接近值
+		let maxN = (arr[2] + 55) >= 255 ? 255 : (arr[2] + 55); // 最大接近值
 		// 判断是否是需要回避的颜色 或者是否是接近 需要回避的颜色 颜色取值范围（上下55）
-		while( r == arr[0] && g == arr[1] && (b >= minN && b <= maxN) ){
-			g = $t.randomBasedSection(0,255);
-			b = $t.randomBasedSection(0,255);
+		while(r == arr[0] && g == arr[1] && (b >= minN && b <= maxN)) {
+			g = $t.randomBasedSection(0, 255);
+			b = $t.randomBasedSection(0, 255);
 			res = r + ',' + g + ',' + b;
 		}
 	}
-	
+
 	return 'rgba(' + res + ',' + clarityP + ')';
 };
 /*
  * 封装兼容所有浏览器的，获取页面滚动距离的方法
  * 返回值：[Object]
  */
-$t.getScrollOffset = function (){
-	if(window.pageXOffset){
+$t.getScrollOffset = function() {
+	if(window.pageXOffset) {
 		return {
-			x : window.pageXOffset,
-			y : window.pageYOffset
+			x: window.pageXOffset,
+			y: window.pageYOffset
 		}
-	}else{
+	} else {
 		return {
-			x : document.body.scrollLeft + document.documentElement.scrollLeft,
-			y : document.body.scrollTop + document.documentElement.scrollTop
+			x: document.body.scrollLeft + document.documentElement.scrollLeft,
+			y: document.body.scrollTop + document.documentElement.scrollTop
 		}
 	}
 };
@@ -305,22 +323,22 @@ $t.getScrollOffset = function (){
  * 封装兼容所有浏览器的，返回浏览器视口尺寸的方法
  * 返回值：[Object]
  */
-$t.getViewportOffset = function (){
-	if(window.innerWidth){
+$t.getViewportOffset = function() {
+	if(window.innerWidth) {
 		return {
-			w : window.innerWidth,
-			h : window.innerHeight
+			w: window.innerWidth,
+			h: window.innerHeight
 		}
-	}else{
-		if(document.compatMode === 'BackCompat'){
+	} else {
+		if(document.compatMode === 'BackCompat') {
 			return {
-				w : document.body.clientWidth,
-				h : document.body.clientHeight
+				w: document.body.clientWidth,
+				h: document.body.clientHeight
 			}
-		}else{
+		} else {
 			return {
-				w : document.documentElement.clientWidth,
-				h : document.documentElement.clientHeight
+				w: document.documentElement.clientWidth,
+				h: document.documentElement.clientHeight
 			}
 		}
 	}
@@ -338,21 +356,21 @@ $t.getViewportOffset = function (){
  	
  	返回值：无
  * */
-$t.addEvent = function (elem,type,handle,bool){
+$t.addEvent = function(elem, type, handle, bool) {
 	bool = bool || false;
-	if(elem.addEventListener){
-		elem.addEventListener(type,handle,bool);
-	}else if(elem.attachEvent){
-		if($t.getType(handle) == 'string'){
+	if(elem.addEventListener) {
+		elem.addEventListener(type, handle, bool);
+	} else if(elem.attachEvent) {
+		if($t.getType(handle) == 'string') {
 			// 为了在ie低版本下，即能把this指向目标元素，又能支持解除绑定的事件函数
-			elem['ie' + handle] = function (ev){
-				handle.call(elem,ev); 
+			elem['ie' + handle] = function(ev) {
+				handle.call(elem, ev);
 			}
-			elem.attachEvent('on' + type,elem['ie' + handle]);
-		}else{
-			elem.attachEvent('on' + type,handle);
+			elem.attachEvent('on' + type, elem['ie' + handle]);
+		} else {
+			elem.attachEvent('on' + type, handle);
 		}
-	}else{
+	} else {
 		elem['on' + type] = handle;
 	}
 };
@@ -367,12 +385,12 @@ $t.addEvent = function (elem,type,handle,bool){
  		
  	返回值：无
  * */
-$t.removeEvent = function (elem,type,handleName,bool){
-	if(elem.removeEventListener){
-		elem.removeEventListener(type,handleName,bool);
-	}else if(elem.detachEvent){
-		elem.detachEvent('on' + type,'ie' + handleName)
-	}else{
+$t.removeEvent = function(elem, type, handleName, bool) {
+	if(elem.removeEventListener) {
+		elem.removeEventListener(type, handleName, bool);
+	} else if(elem.detachEvent) {
+		elem.detachEvent('on' + type, 'ie' + handleName)
+	} else {
 		elem['on' + type] = null;
 	}
 };
@@ -383,10 +401,10 @@ $t.removeEvent = function (elem,type,handleName,bool){
  	
  	返回值：[Object] 兼容ie 触发事件的目标对象
  * */
-$t.cancelHandler = function (e){
-	if(e.preventDefault){
+$t.cancelHandler = function(e) {
+	if(e.preventDefault) {
 		e.preventDefault();
-	}else{
+	} else {
 		e.returnValue = false;
 	}
 	return e.target || e.srcElement;
@@ -398,10 +416,10 @@ $t.cancelHandler = function (e){
  	
  	返回值：[Object] 兼容ie 触发事件的目标对象
  * */
-$t.stopBubble = function (event){
-	if(event.stopPropagation){
+$t.stopBubble = function(event) {
+	if(event.stopPropagation) {
 		event.stopPropagation();
-	}else{
+	} else {
 		event.cancelBubble = true;
 	}
 	return event.target || event.srcElement;
@@ -415,27 +433,29 @@ $t.stopBubble = function (event){
  	
  	返回值：[String] 创建的script标签的id(为了防止耦合冲突 id中带有时间戳)
  * */
-$t.loadScript = function (ur,callback,errorBack){
-	if(!ur){return;} // 容错
+$t.loadScript = function(ur, callback, errorBack) {
+	if(!ur) {
+		return;
+	} // 容错
 	var script = document.createElement('script');
 	script.type = 'text/javascript';
 	script.id = 'loadScript' + new Date().getTime();
-	if(script.readyState){
+	if(script.readyState) {
 		// 兼容ie
-		script.onreadystatechange = function (){
-			if(script.readyState == 'complete' || script.readyState == 'loaded'){
-				callback && callback();  // 成功回调
+		script.onreadystatechange = function() {
+			if(script.readyState == 'complete' || script.readyState == 'loaded') {
+				callback && callback(); // 成功回调
 			}
 		}
-	}else{
-		script.onload = function (){
+	} else {
+		script.onload = function() {
 			callback && callback(); // 成功回调
 		}
 	}
-	script.onerror = function (){
-		errorBack && errorBack();  // 出错回调
+	script.onerror = function() {
+		errorBack && errorBack(); // 出错回调
 	}
-	script.src = ur;  // 这行代码放在这，是为了避免js文件加载太快，无法监听到onreadystatechange或onload事件
+	script.src = ur; // 这行代码放在这，是为了避免js文件加载太快，无法监听到onreadystatechange或onload事件
 	document.head.appendChild(script);
 	return script.id; // 返回 script标签的id
 };
@@ -448,21 +468,21 @@ $t.loadScript = function (ur,callback,errorBack){
  									newArrr [Array] 去重后的新数组 
  									temp [Object] 记录了每一个重复的值在原数组中依次出现的索引 
  * */
-$t.unique = function(tagArr){
+$t.unique = function(tagArr) {
 	let temp = {},
 		arr = [],
 		leng = tagArr.length;
-	for(let i = 0; i < leng; i++){
-		if(temp[tagArr[i]] === undefined){
+	for(let i = 0; i < leng; i++) {
+		if(temp[tagArr[i]] === undefined) {
 			temp[tagArr[i]] = i;
 			arr.push(tagArr[i])
-		}else{
+		} else {
 			temp[tagArr[i]] += '-' + i;
 		}
 	}
 	return {
-		newArrr : arr,
-		temp : temp
+		newArrr: arr,
+		temp: temp
 	};
 };
 /*
@@ -472,21 +492,21 @@ $t.unique = function(tagArr){
 		
  	返回值：[String]
  */
-$t.getType = function (target){
+$t.getType = function(target) {
 	let ret = typeof(target);
 	let template = {
-		'[object Array]' : 'array',
-		'[object Object]' : 'object',
-		'[object Number]' : 'number - object',  // 包装类对象
-		'[object Boolean]' : 'boolean - object', // 包装类对象
-		'[object String]' : 'string - object'    // 包装类对象
+		'[object Array]': 'array',
+		'[object Object]': 'object',
+		'[object Number]': 'number - object', // 包装类对象
+		'[object Boolean]': 'boolean - object', // 包装类对象
+		'[object String]': 'string - object' // 包装类对象
 	}
-	if(target === null){
+	if(target === null) {
 		return 'null';
-	}else if(ret == 'object'){
+	} else if(ret == 'object') {
 		let str = Object.prototype.toString.call(target); // 主要是为了检测是否是包装类对象
 		return template[str];
-	}else{
+	} else {
 		return ret;
 	}
 };
@@ -501,12 +521,12 @@ $t.getType = function (target){
 		
  	返回值：无
  */
-$t.insertAfter = function(targetNode,afterNode,parentNode){
-	var beforeNode = $t.getSiblings(afterNode,1);  // 兼容ie获取afterNode的下一个元素节点
-	if(beforeNode === null){
+$t.insertAfter = function(targetNode, afterNode, parentNode) {
+	var beforeNode = $t.getSiblings(afterNode, 1); // 兼容ie获取afterNode的下一个元素节点
+	if(beforeNode === null) {
 		parentNode.appendChild(targetNode);
-	}else{
-		parentNode.insertBefore(targetNode,beforeNode);
+	} else {
+		parentNode.insertBefore(targetNode, beforeNode);
 	}
 };
 /*
@@ -517,20 +537,20 @@ $t.insertAfter = function(targetNode,afterNode,parentNode){
 		
  	返回值：[Object] 返回静态的元素几何尺寸,
  * */
-$t.getRect = function (ele){
+$t.getRect = function(ele) {
 	var obj = {},
-			oRect = ele.getBoundingClientRect(),
-			top = document.documentElement.clientTop,  // 非IE为0，IE为2
-  		left= document.documentElement.clientLeft;  // 非IE为0，IE为2
-  obj.top = oRect.top - top;
-  obj.bottom = oRect.bottom - top;
-  obj.left = oRect.left - left;
-  obj.right = oRect.right - left;
-  obj.width = oRect.width || oRect.right - oRect.left; // IE67不存在width 使用right - left获得
-  obj.height = oRect.height || oRect.bottom - oRect.top;
-  obj.width = Math.round(obj.width);
-  obj.height = Math.round(obj.height);
-  return obj;
+		oRect = ele.getBoundingClientRect(),
+		top = document.documentElement.clientTop, // 非IE为0，IE为2
+		left = document.documentElement.clientLeft; // 非IE为0，IE为2
+	obj.top = oRect.top - top;
+	obj.bottom = oRect.bottom - top;
+	obj.left = oRect.left - left;
+	obj.right = oRect.right - left;
+	obj.width = oRect.width || oRect.right - oRect.left; // IE67不存在width 使用right - left获得
+	obj.height = oRect.height || oRect.bottom - oRect.top;
+	obj.width = Math.round(obj.width);
+	obj.height = Math.round(obj.height);
+	return obj;
 }
 /*
 获取当前日期
@@ -539,18 +559,18 @@ $t.getRect = function (ele){
 		date : [Object] 日期对象 （默认时当前日期）
  	返回值：[Object] 带有年 月 周（0 表示 周日） 日 时 分 秒 毫秒
  * */
-$t.getDate = function (oDate){
+$t.getDate = function(oDate) {
 	var d = oDate || new Date(),
-			obj = {
-				year : d.getFullYear(), // 年
-				month : d.getMonth() + 1, // 月
-				week : d.getDay(), // 周 （0 表示 周日）
-				day : d.getDate(), // 日
-				hour : d.getHours(), // 时
-				minute : d.getMinutes(), // 分
-				seconds : d.getSeconds(), // 秒
-				timestamp : d.getTime() // 毫秒
-			}
+		obj = {
+			year: d.getFullYear(), // 年
+			month: d.getMonth() + 1, // 月
+			week: d.getDay(), // 周 （0 表示 周日）
+			day: d.getDate(), // 日
+			hour: d.getHours(), // 时
+			minute: d.getMinutes(), // 分
+			seconds: d.getSeconds(), // 秒
+			timestamp: d.getTime() // 毫秒
+		}
 	return obj;
 };
 /*
@@ -567,35 +587,35 @@ $t.getDate = function (oDate){
 * 
 返回值：[String]
 * */
-$t.dealBlank = function (str,deleteWay,sub)
-{
-  deleteWay = deleteWay || 1;
-  sub = sub || "";
-  var result = str;
-  switch (deleteWay)
-  {
-    case 1:
-      result = str.replace(/(^\s+)|(\s+$)/g,sub);
-      break;
-    case 2:
-      result = result.replace(/[\s\n\t\r\v]/g,sub);
-      break;
-    case 3:
-      result = str.replace(/(^\s+)|(\s+$)/g,'');
-      result = result.replace(/[\s\n\t\r\v]/g,sub);
-      break;
-    case 4:
-      result = result.replace(/[\s\n\t\r\v]/g,' ');
-      var arr = result.split(' ');
-      var arr2 = arr.filter(function (item,index) {
-        if(item){return item}
-      })
-      result = arr2.join(sub);
-      break;
-    default:
-      console.log('deleteWay值无效，必须是大于0的数字')
-  }
-  return result;
+$t.dealBlank = function(str, deleteWay, sub) {
+	deleteWay = deleteWay || 1;
+	sub = sub || "";
+	var result = str;
+	switch(deleteWay) {
+		case 1:
+			result = str.replace(/(^\s+)|(\s+$)/g, sub);
+			break;
+		case 2:
+			result = result.replace(/[\s\n\t\r\v]/g, sub);
+			break;
+		case 3:
+			result = str.replace(/(^\s+)|(\s+$)/g, '');
+			result = result.replace(/[\s\n\t\r\v]/g, sub);
+			break;
+		case 4:
+			result = result.replace(/[\s\n\t\r\v]/g, ' ');
+			var arr = result.split(' ');
+			var arr2 = arr.filter(function(item, index) {
+				if(item) {
+					return item
+				}
+			})
+			result = arr2.join(sub);
+			break;
+		default:
+			console.log('deleteWay值无效，必须是大于0的数字')
+	}
+	return result;
 };
 /*
 获取地址栏参数的函数
@@ -603,14 +623,14 @@ $t.dealBlank = function (str,deleteWay,sub)
 	参数：
 		n [String]* 指定要查找的关键字，
  	返回值：[Object | String] 
- * */ 
-$t.getAddressParam = function (n){
+ * */
+$t.getAddressParam = function(n) {
 	var str = window.location.search.substr(1),
-			obj = {},
-			arr = str.split('&'),
-			leng = arr.length,
-			arr2 = [];
-	for(var i = 0; i < leng; i++){
+		obj = {},
+		arr = str.split('&'),
+		leng = arr.length,
+		arr2 = [];
+	for(var i = 0; i < leng; i++) {
 		arr2 = arr[i].split('=');
 		obj[arr2[0]] = arr2[1];
 	}
@@ -625,10 +645,10 @@ $t.getAddressParam = function (n){
 		t [Number] 要保留的时间(暂时仅支持以天为单位,默认临时存储)，
  	返回值：无 
  * */
-$t.setCooki = function (att,prop,t){
+$t.setCooki = function(att, prop, t) {
 	var oDate = new Date();
-	oDate.setDate( oDate.getDate() + t ); // 计算有效时间
-	prop = encodeURI( prop ); // 编码处理 防止由特殊字符的情况
+	oDate.setDate(oDate.getDate() + t); // 计算有效时间
+	prop = encodeURI(prop); // 编码处理 防止由特殊字符的情况
 	document.cookie = att + '=' + prop + ';expires=' + oDate.toGMTString();
 }
 /*
@@ -638,12 +658,12 @@ $t.setCooki = function (att,prop,t){
 		att [String]* 指定要查找的关键字，
  	返回值：[Object | String] 
  * */
-$t.getCooki = function (att){
+$t.getCooki = function(att) {
 	var arr1 = document.cookie.split('; '),
-			leng = arr1.length,
-			arr2 = [],
-			obj = {};
-	for(var i = 0; i < leng; i++){
+		leng = arr1.length,
+		arr2 = [],
+		obj = {};
+	for(var i = 0; i < leng; i++) {
 		arr2 = arr1[i].split('=');
 		obj[arr2[0]] = decodeURI(arr2[1]); // 解码存储
 	}
@@ -659,17 +679,17 @@ $t.getCooki = function (att){
 		mastExec : [Number] 最大间隔时间（毫秒）
  	返回值：[Function] (默认使用...语法糖接受参数，低版本浏览器可使用arguments或根据不同情况设置参数)
  * */
-$t.reduceDealWith = function (fn,delay,mastExec){
+$t.reduceDealWith = function(fn, delay, mastExec) {
 	var timer = null,
-			lastTime = new Date();
-	return function (...arg){
+		lastTime = new Date();
+	return function(...arg) {
 		var now = new Date();
 		clearTimeout(timer);
-		if(now - lastTime < mastExec){
-			timer = setTimeout(function (){
+		if(now - lastTime < mastExec) {
+			timer = setTimeout(function() {
 				fn(...arg);
-			},delay)
-		}else{
+			}, delay)
+		} else {
 			fn(...arg);
 			lastTime = now;
 		}
@@ -685,14 +705,14 @@ $t.reduceDealWith = function (fn,delay,mastExec){
 		
  	返回值：[Boolean]
  * */
-$t.isCollision = function (moveEle,tagEle){
+$t.isCollision = function(moveEle, tagEle) {
 	var mRect = $t.getRect(moveEle),
-			tRect = $t.getRect(tagEle);
+		tRect = $t.getRect(tagEle);
 	if(
-		mRect.top > tRect.bottom || 
-		tRect.top > mRect.bottom || 
+		mRect.top > tRect.bottom ||
+		tRect.top > mRect.bottom ||
 		tRect.left > mRect.right ||
-		mRect.left > tRect.right){
+		mRect.left > tRect.right) {
 		return false;
 	}
 	return true;
@@ -707,13 +727,15 @@ $t.isCollision = function (moveEle,tagEle){
 		cn : [String] 连接符 (默认 :)
  	返回值：[String]
  * */
-$t.timeFormat = function (t,cn){
-	if(!t){return;}
+$t.timeFormat = function(t, cn) {
+	if(!t) {
+		return;
+	}
 	t = Math.floor(t);
 	cn = cn ? cn + '' : ':';
-	var h = $t.toZero( Math.floor(t/3600) ), // 时
-			m = $t.toZero( Math.floor(t%3600/60) ), // 分
-			s = $t.toZero(t%60); // 秒
+	var h = $t.toZero(Math.floor(t / 3600)), // 时
+		m = $t.toZero(Math.floor(t % 3600 / 60)), // 分
+		s = $t.toZero(t % 60); // 秒
 	return h + cn + m + cn + s;
 }
 /*
@@ -723,8 +745,8 @@ $t.timeFormat = function (t,cn){
 		num : [Number]* 数字
  	返回值：[String]
  * */
-$t.toZero = function (num){
-	num = (num <=9 ? '0' + num : num);
+$t.toZero = function(num) {
+	num = (num <= 9 ? '0' + num : num);
 	return num;
 }
 /*
@@ -733,11 +755,11 @@ $t.toZero = function (num){
 	参数：
  	返回值：[String]
  * */
-$t.getSelectPageTxt = function (){
-	if(document.selection){
+$t.getSelectPageTxt = function() {
+	if(document.selection) {
 		return document.selection.createRange().text; // ie
-	}else{
-		return window.getSelection().toString();  // 标准
+	} else {
+		return window.getSelection().toString(); // 标准
 	}
 }
 /*
@@ -749,19 +771,19 @@ $t.getSelectPageTxt = function (){
 		mo : [Number]  模式：1-四舍五入，2-向下取整，3-向上取整（默认1）
  	返回值：[Number]
  * */
-$t.dealDecimal = function (num,dig,mo){
-	if(!num){
+$t.dealDecimal = function(num, dig, mo) {
+	if(!num) {
 		console.error('num 无效!');
 		return;
 	}
-	if(typeof(num) != 'number' && isNaN(Number(num))){
+	if(typeof(num) != 'number' && isNaN(Number(num))) {
 		console.error('num 不是一个数字!');
 		return;
 	}
 	dig = dig || 2;
 	mo = mo || 1;
-	var i = Math.pow(10,dig);
-	switch (mo) {
+	var i = Math.pow(10, dig);
+	switch(mo) {
 		case 1:
 			num = Math.round(num * i) / i;
 			break;
@@ -775,7 +797,7 @@ $t.dealDecimal = function (num,dig,mo){
 			console.error('mo 无效!');
 			break;
 	}
-	
+
 	return num;
 };
 /*
@@ -790,24 +812,24 @@ hsl色值转rgb色值函数：
 			 g [Number] 绿,
 			 b [Number] 蓝,
  * */
-$t.hslToRgb = function (h, s, l) {
+$t.hslToRgb = function(h, s, l) {
 	var r, g, b;
 	if(s == 0) {
-			r = g = b = l; // achromatic
+		r = g = b = l; // achromatic
 	} else {
-			var hue2rgb = function hue2rgb(p, q, t) {
-					if(t < 0) t += 1;
-					if(t > 1) t -= 1;
-					if(t < 1/6) return p + (q - p) * 6 * t;
-					if(t < 1/2) return q;
-					if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-					return p;
-			}
-			var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-			var p = 2 * l - q;
-			r = hue2rgb(p, q, h + 1/3);
-			g = hue2rgb(p, q, h);
-			b = hue2rgb(p, q, h - 1/3);
+		var hue2rgb = function hue2rgb(p, q, t) {
+			if(t < 0) t += 1;
+			if(t > 1) t -= 1;
+			if(t < 1 / 6) return p + (q - p) * 6 * t;
+			if(t < 1 / 2) return q;
+			if(t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+			return p;
+		}
+		var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+		var p = 2 * l - q;
+		r = hue2rgb(p, q, h + 1 / 3);
+		g = hue2rgb(p, q, h);
+		b = hue2rgb(p, q, h - 1 / 3);
 	}
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
@@ -824,29 +846,62 @@ rgb色值转hsl色值函数：
 			l : [Number] 亮度
 			
  * */
-$t.rgbToHsl = function (r, g, b) {
+$t.rgbToHsl = function(r, g, b) {
 	r /= 255, g /= 255, b /= 255;
-	var max = Math.max(r, g, b), min = Math.min(r, g, b);
+	var max = Math.max(r, g, b),
+		min = Math.min(r, g, b);
 	var h, s, l = (max + min) / 2;
-	if (max == min){ 
-			h = s = 0; // achromatic
+	if(max == min) {
+		h = s = 0; // achromatic
 	} else {
-			var d = max - min;
-			s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-			switch(max) {
-					case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-					case g: h = (b - r) / d + 2; break;
-					case b: h = (r - g) / d + 4; break;
-			}
-			h /= 6;
+		var d = max - min;
+		s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+		switch(max) {
+			case r:
+				h = (g - b) / d + (g < b ? 6 : 0);
+				break;
+			case g:
+				h = (b - r) / d + 2;
+				break;
+			case b:
+				h = (r - g) / d + 4;
+				break;
+		}
+		h /= 6;
 	}
 	return [h, s, l];
 }
-
-
-
-
-
+/*
+获取指定字符串中出现次数最多的字符：
+	注意：
+	参数：
+		 	str : [String] 指定字符串,
+	返回值：[Object]
+			
+ * */
+$t.getMaxFromStr = function(str) {
+	var leng = str.length,
+		obj = {},
+		max = 0,
+		moreKey = str.charAt(0);
+	for (var i = 0; i < leng; i++) {
+		if(obj[ str.charAt(i) ]) {
+			obj[ str.charAt(i) ]++;
+		} else {
+			obj[ str.charAt(i) ] = 1;
+		}
+		if(max < obj[ str.charAt(i) ]) {
+			max = obj[ str.charAt(i) ];
+			moreKey = str.charAt(i);
+		}
+	}
+	
+	return {
+		maxNum : max,
+		moreKey :moreKey,
+		obj : obj
+	};
+}
 
 
 
@@ -888,56 +943,19 @@ input框内容改变事件兼容性封装：
 		callBack [Function] 回调函数
  	返回值：无
  * */
-$e.inputChangeEv = function (otag,callBack){
-	if(!-[1,]){
+$e.inputChangeEv = function(otag, callBack) {
+	if(!-[1, ]) {
 		// ie
-		otag.onpropertychange = function(){
+		otag.onpropertychange = function() {
 			callBack & callBack();
 		}
-	}else{ 
+	} else {
 		// 标准
-		otag.oninput = function(){
+		otag.oninput = function() {
 			callBack & callBack();
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // 应用类函数------------------------------------------------------------------------------
 var $u = {};
@@ -956,40 +974,42 @@ var $u = {};
 			callBack : ,  [Function] 结束的回调函数
 		}
  * */
-$u.doMove = function (oConfig){
-	if(!oConfig || !oConfig.ele){return;}
-	clearInterval(oConfig.ele.doMovetTimer);  // 1,防止重复开启定时器(越点越快) clear清除null或未定义 不会报错
-	
+$u.doMove = function(oConfig) {
+	if(!oConfig || !oConfig.ele) {
+		return;
+	}
+	clearInterval(oConfig.ele.doMovetTimer); // 1,防止重复开启定时器(越点越快) clear清除null或未定义 不会报错
+
 	// 设置默认值
 	oConfig.att = oConfig.att || 'left';
 	oConfig.dir = oConfig.dir === undefined ? 10 : oConfig.dir;
 	oConfig.tagPoint = oConfig.tagPoint === undefined ? 0 : oConfig.tagPoint;
-	
+
 	// 判断并决定方向
-	if(parseInt($t.getStyle(oConfig.ele,oConfig.att)) > oConfig.tagPoint){
+	if(parseInt($t.getStyle(oConfig.ele, oConfig.att)) > oConfig.tagPoint) {
 		oConfig.dir = -oConfig.dir
 	}
-	
+
 	// 2,把定时器存到目标元素身上，可减少变量申明，节省空间，提高性能
-	oConfig.ele.doMovetTimer = setInterval(function (){
-		var speed = parseInt($t.getStyle(oConfig.ele,oConfig.att)) + oConfig.dir;
-		
+	oConfig.ele.doMovetTimer = setInterval(function() {
+		var speed = parseInt($t.getStyle(oConfig.ele, oConfig.att)) + oConfig.dir;
+
 		// 3,最精准地保证移动元素能走到指定的位置，并且不出现被拉回的bug
-		if(speed > oConfig.tagPoint && oConfig.dir > 0 || speed < oConfig.tagPoint && oConfig.dir < 0){
+		if(speed > oConfig.tagPoint && oConfig.dir > 0 || speed < oConfig.tagPoint && oConfig.dir < 0) {
 			speed = oConfig.tagPoint;
 		}
-		
+
 		oConfig.ele.style[oConfig.att] = speed + 'px'; // 赋值
-		
+
 		oConfig.callIn && oConfig.callIn(); // 执行 进行中的回调函数
-		
+
 		// 3,最精准地保证移动元素能走到800的位置，并且不出现被拉回的bug
-		if(speed == oConfig.tagPoint){
+		if(speed == oConfig.tagPoint) {
 			clearInterval(oConfig.ele.doMovetTimer);
-			oConfig.callBack && oConfig.callBack();  // 执行 结束回调函数
+			oConfig.callBack && oConfig.callBack(); // 执行 结束回调函数
 		}
-		
-	},30)
+
+	}, 30)
 };
 
 /*
@@ -1008,38 +1028,40 @@ $u.doMove = function (oConfig){
 			callBack : ,  [Function] 结束的回调函数
 		}
  * */
-$u.shake = function (oConfig){
+$u.shake = function(oConfig) {
 	// 在上次抖动还没结束时，不进行任何操作，防止获取初始位置不准确的bug
-	if(!oConfig || !oConfig.ele || oConfig.ele.shakeTimer){return;}
+	if(!oConfig || !oConfig.ele || oConfig.ele.shakeTimer) {
+		return;
+	}
 	// 设置默认值
-	oConfig.att = oConfig.att || 'left';  // 方向左右
-	oConfig.startValue = oConfig.startValue || $t.getStyle(oConfig.ele,oConfig.att);  // 初始的位置
+	oConfig.att = oConfig.att || 'left'; // 方向左右
+	oConfig.startValue = oConfig.startValue || $t.getStyle(oConfig.ele, oConfig.att); // 初始的位置
 	oConfig.startValue = parseInt(oConfig.startValue);
-	oConfig.scope = oConfig.scope || 20;         // 范围
-	oConfig.frequency = oConfig.frequency || 2;   // 频率
-	
-	clearInterval(oConfig.ele.shakeTimer);  // 先清除上一次定时器
-	
+	oConfig.scope = oConfig.scope || 20; // 范围
+	oConfig.frequency = oConfig.frequency || 2; // 频率
+
+	clearInterval(oConfig.ele.shakeTimer); // 先清除上一次定时器
+
 	var arr = [];
 	var num = 0;
 	// 生成抖动所依赖的由一正一负的数字组成的 数组
-	for (var i = oConfig.scope; i > 0; i-=oConfig.frequency) {
-		arr.push(i,-i);
+	for(var i = oConfig.scope; i > 0; i -= oConfig.frequency) {
+		arr.push(i, -i);
 	}
-	arr.push(0);   // 在数组最后填入0，否则回不到原位置
+	arr.push(0); // 在数组最后填入0，否则回不到原位置
 	var leng = arr.length;
 	// 开启间隔定时器
-	oConfig.ele.shakeTimer = setInterval(function (){
+	oConfig.ele.shakeTimer = setInterval(function() {
 		oConfig.ele.style[oConfig.att] = oConfig.startValue + arr[num] + 'px';
 		num++;
-		oConfig.callIn && oConfig.callIn();  // 进行中的回调函数
-		if(num == leng){
+		oConfig.callIn && oConfig.callIn(); // 进行中的回调函数
+		if(num == leng) {
 			clearInterval(oConfig.ele.shakeTimer);
 			oConfig.ele.shakeTimer = null; // 设为null，用于判断当前抖动是否结束（以防止获取初始位置不准确的bug）
 			num = 0;
-			oConfig.callBack && oConfig.callBack();  // 结束的回调函数
+			oConfig.callBack && oConfig.callBack(); // 结束的回调函数
 		}
-	},50)
+	}, 50)
 };
 /*
 按下、移动、抬起公共函数封装
@@ -1070,15 +1092,17 @@ oConfig {
  								param4 : 鼠标y轴坐标值
  }
  * */
-$u.downMoveUp = function (oConfig){
-	if(!oConfig || !oConfig.ele){return;} // 限制必有条件
-	
+$u.downMoveUp = function(oConfig) {
+	if(!oConfig || !oConfig.ele) {
+		return;
+	} // 限制必有条件
+
 	oConfig.topOverstep = oConfig.topOverstep === undefined ? 0 : oConfig.topOverstep;
 	oConfig.leftOverstep = oConfig.leftOverstep === undefined ? 0 : oConfig.leftOverstep;
 	oConfig.bottomOverstep = oConfig.bottomOverstep === undefined ? 0 : oConfig.bottomOverstep;
 	oConfig.rightOverstep = oConfig.rightOverstep === undefined ? 0 : oConfig.rightOverstep;
 	oConfig.listenerParent = oConfig.listenerParent === undefined ? document : oConfig.listenerParent;
-	
+
 	var starrT = 0, // 目标元素y轴初始位置
 		startL = 0, // 目标元素x轴初始位置
 		startX = 0, // 鼠标x轴初始位置
@@ -1087,73 +1111,82 @@ $u.downMoveUp = function (oConfig){
 		minL = 0, // 限制左侧最大偏移量
 		maxT = 0, // 限制下部最大偏移量
 		maxL = 0; // 限制右侧最大偏移量
-		
-	$t.addEvent(oConfig.ele,'mousedown',start);
+
+	$t.addEvent(oConfig.ele, 'mousedown', start);
 	// 函数封装
-	function start(ev){
+	function start(ev) {
 		var ev = ev || window.event;
 		$t.cancelHandler(ev); // 阻止默认事件
 		$t.stopBubble(ev); // 阻止冒泡
-		
-		if(oConfig.ele.setCapture){
+
+		if(oConfig.ele.setCapture) {
 			oConfig.ele.setCapture(); // 设置全局捕获，阻止ie低版本下，文字或图片的默认拖拽行为，
 		}
-		
+
 		// 获取相关尺寸
-		if(oConfig.positionParent){
-			var parentW = parseInt( $t.getStyle(oConfig.positionParent,'width') ),
-				parentH = parseInt( $t.getStyle(oConfig.positionParent,'height') );
-		}else{
+		if(oConfig.positionParent) {
+			var parentW = parseInt($t.getStyle(oConfig.positionParent, 'width')),
+				parentH = parseInt($t.getStyle(oConfig.positionParent, 'height'));
+		} else {
 			var parentRect = $t.getViewportOffset(), // 默认获取浏览器视口的 宽高
-			parentW = parentRect.w,
-			parentH = parentRect.h;
+				parentW = parentRect.w,
+				parentH = parentRect.h;
 		}
-		
-		
-		starrT = parseInt( $t.getStyle(oConfig.ele,'top') );  // 目标元素y轴初始位置
-		startL = parseInt( $t.getStyle(oConfig.ele,'left') ); // 目标元素x轴初始位置
+
+		starrT = parseInt($t.getStyle(oConfig.ele, 'top')); // 目标元素y轴初始位置
+		startL = parseInt($t.getStyle(oConfig.ele, 'left')); // 目标元素x轴初始位置
 		startX = ev.clientX; // 鼠标x轴初始位置
 		startY = ev.clientY; // 鼠标y轴初始位置
 		// 在此处计算最大和最小值，是为了防止目标元素初始化时，是隐藏状态的情况(即获取不到宽高)
-		maxT = parentH - parseInt( $t.getRect(oConfig.ele).height ) + oConfig.bottomOverstep; // 限制上部最大偏移量
-		minT = 0 + oConfig.topOverstep;  // 限制左侧最大偏移量
-		maxL = parentW - parseInt( $t.getRect(oConfig.ele).width ) + oConfig.rightOverstep; // 限制下部最大偏移量
-		minL = 0 + oConfig.leftOverstep;  // 限制右侧最大偏移量
-		
-		oConfig.startFn && oConfig.startFn.call(oConfig.ele,startX,startY);  // 初始的回调函数
-		
-		$t.addEvent(oConfig.listenerParent,'mousemove',move);
-		$t.addEvent(oConfig.listenerParent,'mouseup',end);
+		maxT = parentH - parseInt($t.getRect(oConfig.ele).height) + oConfig.bottomOverstep; // 限制上部最大偏移量
+		minT = 0 + oConfig.topOverstep; // 限制左侧最大偏移量
+		maxL = parentW - parseInt($t.getRect(oConfig.ele).width) + oConfig.rightOverstep; // 限制下部最大偏移量
+		minL = 0 + oConfig.leftOverstep; // 限制右侧最大偏移量
+
+		oConfig.startFn && oConfig.startFn.call(oConfig.ele, startX, startY); // 初始的回调函数
+
+		$t.addEvent(oConfig.listenerParent, 'mousemove', move);
+		$t.addEvent(oConfig.listenerParent, 'mouseup', end);
 	}
-	function move(ev){
+
+	function move(ev) {
 		var ev = ev || window.event;
 		var moveX = ev.clientX,
 			moveY = ev.clientY,
-			disX = moveX - startX,  // x轴差值
-			disY = moveY - startY,  // y轴差值
-			resT = starrT + disY,   // x轴最终位置值
-			resL = startL + disX;   // y轴最终位置值
-			
-			if(resT < minT){resT = minT;}  // 限制上部最大偏移量
-			if(resL < minL){resL = minL;}  // 限制左侧最大偏移量
-			if(resT > maxT){resT = maxT;}  // 限制下部最大偏移量
-			if(resL > maxL){resL = maxL;}  // 限制右侧最大偏移量
-			
-		oConfig.callIn && oConfig.callIn.call(oConfig.ele,resT,resL,moveX,moveY);  // 移动中的回调函数
+			disX = moveX - startX, // x轴差值
+			disY = moveY - startY, // y轴差值
+			resT = starrT + disY, // x轴最终位置值
+			resL = startL + disX; // y轴最终位置值
+
+		if(resT < minT) {
+			resT = minT;
+		} // 限制上部最大偏移量
+		if(resL < minL) {
+			resL = minL;
+		} // 限制左侧最大偏移量
+		if(resT > maxT) {
+			resT = maxT;
+		} // 限制下部最大偏移量
+		if(resL > maxL) {
+			resL = maxL;
+		} // 限制右侧最大偏移量
+
+		oConfig.callIn && oConfig.callIn.call(oConfig.ele, resT, resL, moveX, moveY); // 移动中的回调函数
 	}
-	function end(ev){
+
+	function end(ev) {
 		var ev = ev || window.event;
-		maxT = 0;  // 防止数据叠加
-		maxL = 0;  // 防止数据叠加
-		
-		if(oConfig.ele.releaseCapture){
+		maxT = 0; // 防止数据叠加
+		maxL = 0; // 防止数据叠加
+
+		if(oConfig.ele.releaseCapture) {
 			oConfig.ele.releaseCapture(); // 释放全局捕获
 		}
-		
-		oConfig.callBack && oConfig.callBack.call(oConfig.ele,ev.clientX,ev.clientY); // 结束时的回调函数
-		
-		$t.removeEvent(oConfig.listenerParent,'mousemove',move);
-		$t.removeEvent(oConfig.listenerParent,'mouseup',end);
+
+		oConfig.callBack && oConfig.callBack.call(oConfig.ele, ev.clientX, ev.clientY); // 结束时的回调函数
+
+		$t.removeEvent(oConfig.listenerParent, 'mousemove', move);
+		$t.removeEvent(oConfig.listenerParent, 'mouseup', end);
 	}
 };
 /*
@@ -1172,87 +1205,53 @@ $u.downMoveUp = function (oConfig){
  	可直接调用的事件：
  		destroyFn : 销毁滚轮事件
  * */
-$u.MouseRoller = function (oConfig){
-	if(!oConfig || !oConfig.ele){return;}
+$u.MouseRoller = function(oConfig) {
+	if(!oConfig || !oConfig.ele) {
+		return;
+	}
 	oConfig.bool = oConfig.bool || false;
 	var _this = this;
 	// 向上滚动
 	_this.rollerUp = {
-		callBack : null,
-		doing : function (){
+		callBack: null,
+		doing: function() {
 			this.callBack && this.callBack();
 		}
 	};
 	// 向下滚动
 	_this.rollerDown = {
-		callBack : null,
-		doing : function (){
+		callBack: null,
+		doing: function() {
 			this.callBack && this.callBack();
 		}
 	};
 	// 滚轮处理函数
-	_this.handleFn = function (e){
-		
-		if( (e.wheelDelta && e.wheelDelta > 0) || (e.detail && e.detail < 0) ){
+	_this.handleFn = function(e) {
+
+		if((e.wheelDelta && e.wheelDelta > 0) || (e.detail && e.detail < 0)) {
 			_this.rollerUp.doing();
-		}else{
+		} else {
 			_this.rollerDown.doing();
 		}
 		$t.cancelHandler(e);
 		$t.stopBubble(e);
 	}
 	// 兼容性绑定事件
-	if(oConfig.ele.onmousewheel !== undefined){
-		$t.addEvent(oConfig.ele,'mousewheel',_this.handleFn,oConfig.bool);
-	}else{
-		oConfig.ele.addEventListener('DOMMouseScroll',_this.handleFn,oConfig.bool)
+	if(oConfig.ele.onmousewheel !== undefined) {
+		$t.addEvent(oConfig.ele, 'mousewheel', _this.handleFn, oConfig.bool);
+	} else {
+		oConfig.ele.addEventListener('DOMMouseScroll', _this.handleFn, oConfig.bool)
 	}
 	// 模拟监听事件，处理相应的函数
-	_this.on = function (evType,handle){
+	_this.on = function(evType, handle) {
 		_this[evType].callBack = handle;
 	}
 	// 销毁滚轮事件
-	_this.destroyFn = function (){
-		if(oConfig.ele.onmousewheel !== undefined){
-			$t.removeEvent(oConfig.ele,'mousewheel',_this.handleFn,oConfig.bool);
-		}else{
-			oConfig.ele.removeEventListener('DOMMouseScroll',_this.handleFn,oConfig.bool)
+	_this.destroyFn = function() {
+		if(oConfig.ele.onmousewheel !== undefined) {
+			$t.removeEvent(oConfig.ele, 'mousewheel', _this.handleFn, oConfig.bool);
+		} else {
+			oConfig.ele.removeEventListener('DOMMouseScroll', _this.handleFn, oConfig.bool)
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
