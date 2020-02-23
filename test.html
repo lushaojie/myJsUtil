@@ -11,31 +11,17 @@
 	<body>
 
 	</body>
-	<script src="customTools.js"></script>
+	<script src="newTools.js"></script>
 	<script>
-		getStr("aabbcccdddeccccccceeeffaaa");
-		let res = $t.getMaxFromStr("aabbcccdddeeccccccceeffaaa");
-		console.log(res)
-		function getStr(str) {
-			let arr = str.split('');
-			let obj = {};
-			let max = 0;
-			let moreKey = arr[0];
-			arr.forEach((item, index) => {
-				if(obj[item]) {
-					obj[item]++;
-				} else {
-					obj[item] = 1;
+		let obj = {
+			a: {
+				b: {
+					c: '杨紫'
 				}
-				if(max < obj[item]) {
-					max = obj[item];
-					moreKey = item;
-				}
-
-			})
-
-			console.log(`出现次数最多的是：${moreKey},出现了：${max}次`);
-		}
+			}
+		};
+		let res = getValueByPath(obj, 'a.b');
+		console.log(res, 'res');
 	</script>
 
 </html>
