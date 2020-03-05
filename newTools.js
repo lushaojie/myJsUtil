@@ -41,3 +41,15 @@ function deepClone(origin, target){
 
     return target;
 }
+
+// 求一个字符串的字节长度
+function retBytes(str){
+	var len = str.length,
+		num = len;
+	for(var i = 0; i < len; i++){
+		if(str.charCodeAt(i) > 255){
+			num++;
+		}
+	}
+	return num;
+}

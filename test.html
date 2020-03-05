@@ -13,38 +13,16 @@
 </body>
 <script src="newTools.js"></script>
 <script>
-function deepClone(origin, target){
-    target = target || {};
-    var toStr = Object.prototype.toString,
-        arrStr = '[object Array]';
-
-    for (const k in origin) {
-        if (origin.hasOwnProperty(k)) { // 排除原型上的属性
-            var v = origin[k];
-            if(typeof(v) == 'object' && v !== null){
-				
-                target[k] = toStr.call(v) == arrStr ? [] : {};
-
-                deepClone(v, target[k]);
-
-            }else{
-                target[k] = v;
-            }
-        }
-    }
-
-    return target;
+function retBytes(str){
+	var len = str.length,
+		num = len;
+	for(var i = 0; i < len; i++){
+		if(str.charCodeAt(i) > 255){
+			num++;
+		}
+	}
+	return num;
 }
-var obj = {
-	a: 'a',
-	obj: {
-		b: 'b'
-	},
-	arr: [1],
-	n: null
-}
-var obj2 = deepClone(obj);
-console.log(obj2);
 </script>
 
 </html>
