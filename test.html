@@ -1,27 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>Document</title>
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
 
-	<body>
+<body>
 
-	</body>
-	<script src="newTools.js"></script>
-	<script>
-		let obj = {
-			a: {
-				b: {
-					c: '杨紫'
-				}
-			}
-		};
-		let res = getValueByPath(obj, 'a.b');
-		console.log(res, 'res');
-	</script>
+</body>
+<script src="newTools.js"></script>
+<script>
+function deepClone(origin, target){
+    target = target || {};
+    var toStr = Object.prototype.toString,
+        arrStr = '[object Array]';
+
+    for (const k in origin) {
+        if (origin.hasOwnProperty(k)) { // 排除原型上的属性
+            var v = origin[k];
+            if(typeof(v) == 'object' && v !== null){
+				
+                target[k] = toStr.call(v) == arrStr ? [] : {};
+
+                deepClone(v, target[k]);
+
+            }else{
+                target[k] = v;
+            }
+        }
+    }
+
+    return target;
+}
+var obj = {
+	a: 'a',
+	obj: {
+		b: 'b'
+	},
+	arr: [1],
+	n: null
+}
+var obj2 = deepClone(obj);
+console.log(obj2);
+</script>
 
 </html>
