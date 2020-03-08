@@ -13,16 +13,22 @@
 </body>
 <script src="newTools.js"></script>
 <script>
-function retBytes(str){
-	var len = str.length,
-		num = len;
-	for(var i = 0; i < len; i++){
-		if(str.charCodeAt(i) > 255){
-			num++;
+	var arr = [5,3,4,1,2];
+
+	function sortByBubble(arr){
+		var leng = arr.length -1;
+		for(var i = 0; i < leng; i++){
+			for(var j = 0; j < leng -i; j++){
+				if(arr[j] > arr[j + 1]){
+					var tem = arr[j];
+					arr[j] = arr[j+1];
+					arr[j+1] = tem;
+				}
+			}
 		}
 	}
-	return num;
-}
+	sortByBubble(arr);
+	console.log(arr);
 </script>
 
 </html>

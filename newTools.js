@@ -53,3 +53,17 @@ function retBytes(str){
 	}
 	return num;
 }
+
+// 冒泡排序
+function sortByBubble(arr){
+    var leng = arr.length -1;
+    for(var i = 0; i < leng; i++){
+        for(var j = 0; j < leng -i; j++){
+            if(arr[j] > arr[j + 1]){
+                var tem = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = tem;
+            }
+        }
+    }
+}
