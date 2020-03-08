@@ -9,23 +9,27 @@
 </head>
 
 <body>
-
+	<button id="btn">btn</button>
 </body>
 <script src="newTools.js"></script>
 <script>
-	var arr = [5,3,4,1,2];
 
-	function arrReverse(arr){
-		var leng = arr.length - 1,
-			forNum = leng / 2;
-		for(var i = 0; i < forNum; i++){
-			var tem = arr[i];
-			arr[i] = arr[leng - i];
-			arr[leng - i] = tem;
+	function debounce(fn, delay){
+		
+		var timer = null;
+		return function(){
+			// var t = this; // 矫正this
+			clearTimeout(timer);
+			timer = setTimeout(function(){
+				// fn.call(t); // 矫正this
+				fn();
+			}, delay);
 		}
 	}
-	arrReverse(arr);
-	console.log(arr)
+
+	document.getElementById('btn').onclick = debounce(function(){
+		console.log(this, '防抖');
+	},1000);
 </script>
 
 </html>

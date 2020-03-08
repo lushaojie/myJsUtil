@@ -78,3 +78,17 @@ function arrReverse(arr){
         arr[leng - i] = tem;
     }
 }
+
+// 防抖函数 : 一个需要频繁触发的函数，在规定时间内，只让最后一次生效，（只生效一次）
+function debounce(fn, delay){
+		
+    var timer = null;
+    return function(){
+        // var t = this; // 矫正this
+        clearTimeout(timer);
+        timer = setTimeout(function(){
+            // fn.call(t); // 矫正this
+            fn();
+        }, delay);
+    }
+}
