@@ -15,20 +15,17 @@
 <script>
 	var arr = [5,3,4,1,2];
 
-	function sortByBubble(arr){
-		var leng = arr.length -1;
-		for(var i = 0; i < leng; i++){
-			for(var j = 0; j < leng -i; j++){
-				if(arr[j] > arr[j + 1]){
-					var tem = arr[j];
-					arr[j] = arr[j+1];
-					arr[j+1] = tem;
-				}
-			}
+	function arrReverse(arr){
+		var leng = arr.length - 1,
+			forNum = leng / 2;
+		for(var i = 0; i < forNum; i++){
+			var tem = arr[i];
+			arr[i] = arr[leng - i];
+			arr[leng - i] = tem;
 		}
 	}
-	sortByBubble(arr);
-	console.log(arr);
+	arrReverse(arr);
+	console.log(arr)
 </script>
 
 </html>

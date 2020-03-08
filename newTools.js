@@ -54,7 +54,7 @@ function retBytes(str){
 	return num;
 }
 
-// 冒泡排序
+// 手写冒泡排序
 function sortByBubble(arr){
     var leng = arr.length -1;
     for(var i = 0; i < leng; i++){
@@ -65,5 +65,16 @@ function sortByBubble(arr){
                 arr[j+1] = tem;
             }
         }
+    }
+}
+
+// 手写 数组反转函数
+function arrReverse(arr){
+    var leng = arr.length - 1,
+        forNum = leng / 2;
+    for(var i = 0; i < forNum; i++){
+        var tem = arr[i];
+        arr[i] = arr[leng - i];
+        arr[leng - i] = tem;
     }
 }
