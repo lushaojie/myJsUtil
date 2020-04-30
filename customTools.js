@@ -204,43 +204,56 @@ $t.getStyle = function(ele, prop, pseudo) {
 			1 -> 只有数字
 			2 -> 只有小写字母
 			3 -> 只有大写字母
-			4 -> 只有中文（目前还不能把繁体字和简体字区分出来）
+            4 -> 只有中文（目前还不能把繁体字和简体字区分出来）
+        isSymbol [Boolean] 是否包含符号 默认false
 	返回值：[String]
  * */
-$t.createRandomStr = function(leng, typeNum) {
-	var num = 97,
-		str = '',
-		startNum = 0,
-		endNum = 40869;
-	leng = leng === undefined ? 10 : leng; // 默认长度是 10
-	// 判断需要的类型
-	if(typeNum) {
-		var arr = ['', [48, 57],
-			[97, 122],
-			[65, 90],
-			[19968, 40869]
-		];
-		startNum = arr[typeNum][0];
-		endNum = arr[typeNum][1];
-	}
+export const createRandomStr = function (leng, typeNum, isSymbol) {
+    var num = 97,
+        str = '',
+        startNum = 0,
+        endNum = 40869;
+    leng = leng === undefined ? 10 : leng; // 默认长度是 10
+    // 判断需要的类型
+    if (typeNum) {
+        var arr = ['', [48, 57],
+            [97, 122],
+            [65, 90],
+            [19968, 40869]
+        ];
+        startNum = arr[typeNum][0];
+        endNum = arr[typeNum][1];
+    }
 
-	for(var i = 0; i < leng; i++) {
-		// 0 的情况 数字 、小写字母、大写字母
-		if(typeNum == 0) {
-			var arr = [
-				[48, 57],
-				[97, 122],
-				[65, 90]
-			];
-			var indexNum = $t.randomBasedSection(0, 2);
-			startNum = arr[indexNum][0];
-			endNum = arr[indexNum][1];
-		}
+    for (var i = 0; i < leng; i++) {
+        // 0 的情况 数字 、小写字母、大写字母
+        if (typeNum == 0) {
+            var arr1 = [
+                [48, 57],
+                [97, 122],
+                [65, 90]
+            ];
+            var indexNum = randomBasedSection(0, 2);
+            startNum = arr1[indexNum][0];
+            endNum = arr1[indexNum][1];
+        }
 
-		num = $t.randomBasedSection(startNum, endNum); // 生成一个指定区域的随机数
-		str += String.fromCharCode(num); // 根据传入的Unicode编码生成对应的字符，可传多个值
-	}
-	return str;
+        num = randomBasedSection(startNum, endNum); // 生成一个指定区域的随机数
+        str += String.fromCharCode(num); // 根据传入的 ASCII编码生成对应的字符，可传多个值
+
+        // 带符号的情况 Math.random() > 0.7 是为了减少符号出现的频率
+        if(isSymbol && Math.random() > 0.7){
+            var arr2 = [
+                [32, 47], // 标点自1区(32是空格)
+                [58, 64], // 标点2区
+                [91, 96], // 标点3区
+                [123,126] // 标点4区
+            ];
+            var indexNum2 = randomBasedSection(0, 3);
+            str += String.fromCharCode(randomBasedSection(arr2[indexNum2][0], arr2[indexNum2][1]));
+        }
+    }
+    return str;
 };
 /*
 生成一个指定区域的随机数
