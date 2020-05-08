@@ -10,7 +10,7 @@ function getValueByPath( obj, path ){
 }
 
 // 对象继承 es5 - 圣杯模式
-function inherit(Target, Origin){
+function inherit(Target, origin){
     function F(){};
     F.prototype = origin.prototype;
     Target.prototype = new F();
