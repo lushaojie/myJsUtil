@@ -6,6 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
+	<style>
+
+	</style>
 </head>
 
 <body>
@@ -13,23 +16,34 @@
 </body>
 <script src="newTools.js"></script>
 <script>
+	// const requstFn = (url, options, timer) => {
 
-	function debounce(fn, delay){
-		
-		var timer = null;
-		return function(){
-			// var t = this; // 矫正this
-			clearTimeout(timer);
-			timer = setTimeout(function(){
-				// fn.call(t); // 矫正this
-				fn();
-			}, delay);
-		}
-	}
+	// 	function axiosFn(url, options){
+	// 		return new Promise(function(resolve, reject){
+	// 			axios({
+	// 				url,
+	// 				...options
+	// 			}).then(res => {
+	// 				resolve();
+	// 			})
+	// 		})
+	// 	}
+	// 	function timerOutFn(t){
+	// 		return new Promise((resolve, reject) => {
+	// 			setTimeout(() => {
+	// 				reject('请求失败');
+	// 			}, t);
+	// 		})
+	// 	}
 
-	document.getElementById('btn').onclick = debounce(function(){
-		console.log(this, '防抖');
-	},1000);
+	// 	return Promise.race([
+	// 		axiosFn(url, options),
+	// 		timerOutFn(timer)
+	// 	])
+	// }
+
+	
+
 </script>
 
 </html>
