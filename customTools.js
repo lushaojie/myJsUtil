@@ -208,7 +208,7 @@ $t.getStyle = function(ele, prop, pseudo) {
         isSymbol [Boolean] 是否包含符号 默认false
 	返回值：[String]
  * */
-export const createRandomStr = function (leng, typeNum, isSymbol) {
+$t.createRandomStr = function (leng, typeNum, isSymbol) {
     var num = 97,
         str = '',
         startNum = 0,
