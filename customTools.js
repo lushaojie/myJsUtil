@@ -9,28 +9,28 @@ var $t = {};
  		
  	返回值：[Object, 类数组, Array]  ie低版本返回的是 数组 而不是类数组
  * */
-$t.getEle = function(v, oParent) {
-	if(typeof(v) !== 'string') {
+$t.getEle = function (v, oParent) {
+	if (typeof (v) !== 'string') {
 		return;
 	}
 	oParent = oParent || document;
 	var type = v.substr(0, 1),
 		name = v.substr(1),
 		res = null;
-	switch(type) {
+	switch (type) {
 		case '#':
 			res = document.getElementById(name);
 			break;
 		case '.':
-			if(document.getElementsByClassName) {
+			if (document.getElementsByClassName) {
 				res = oParent.getElementsByClassName(name);
 			} else {
 				// 兼容 ie 低版本
 				var aEle = oParent.getElementsByTagName('*'); // 先获取父级元素中所有的dom元素
 				res = [];
-				for(var i = 0; i < aEle.length; i++) {
+				for (var i = 0; i < aEle.length; i++) {
 					// 判断元素中是否含有 对应的class类名
-					if($t.hasClass(aEle[i], name)) {
+					if ($t.hasClass(aEle[i], name)) {
 						res.push(aEle[i]);
 					}
 				}
@@ -52,19 +52,19 @@ $t.getEle = function(v, oParent) {
  		
  	返回值：[Object]
  * */
-$t.getParentEle = function(ele, p) {
-	while(ele && p) {
+$t.getParentEle = function (ele, p) {
+	while (ele && p) {
 		ele = ele.parentNode;
 
-		if(ele && ele.nodeType == 1) {
-			if(typeof(p) == 'string') {
-				if($t.hasClass(ele, p)) {
+		if (ele && ele.nodeType == 1) {
+			if (typeof (p) == 'string') {
+				if ($t.hasClass(ele, p)) {
 					return ele;
 				}
 			} else {
 				p--;
 			}
-		} else if(!ele) {
+		} else if (!ele) {
 			return ele;
 		}
 	}
@@ -77,15 +77,15 @@ $t.getParentEle = function(ele, p) {
  		
  	返回值：[Array]
  * */
-$t.getChildren = function(tag) {
-	if(!tag) {
+$t.getChildren = function (tag) {
+	if (!tag) {
 		return;
 	} // 容错
 	var childs = tag.childNodes,
 		leng = childs.length,
 		arr = [];
-	for(var i = 0; i < leng; i++) {
-		if(childs[i].nodeType == 1) {
+	for (var i = 0; i < leng; i++) {
+		if (childs[i].nodeType == 1) {
 			arr.push(childs[i])
 		}
 	}
@@ -100,22 +100,22 @@ $t.getChildren = function(tag) {
 		
 	返回值：[Object]
  * */
-$t.getSiblings = function(e, n) {
-	while(e && n) {
-		if(n > 0) {
-			if(e.nextElementSibling) {
+$t.getSiblings = function (e, n) {
+	while (e && n) {
+		if (n > 0) {
+			if (e.nextElementSibling) {
 				e = e.nextElementSibling;
 			} else {
 				// 兼容ie9及以下浏览器
-				for(e = e.nextSibling; e && e.nodeType != 1; e = e.nextSibling);
+				for (e = e.nextSibling; e && e.nodeType != 1; e = e.nextSibling);
 			}
 			n--;
 		} else {
-			if(e.previousElementSibling) {
+			if (e.previousElementSibling) {
 				e = e.previousElementSibling;
 			} else {
 				// 兼容ie9及以下浏览器
-				for(e = e.previousSibling; e && e.nodeType != 1; e = e.previousSibling);
+				for (e = e.previousSibling; e && e.nodeType != 1; e = e.previousSibling);
 			}
 			n++;
 		}
@@ -133,8 +133,8 @@ $t.getSiblings = function(e, n) {
  	待改善：
  		可以用一行正则做到 参见 miaov-延迟菜单 案例
  * */
-$t.hasClass = function(tag, classStr) {
-	if(!tag) {
+$t.hasClass = function (tag, classStr) {
+	if (!tag) {
 		return;
 	} // 容错
 	var reg = new RegExp('\\b' + classStr + '\\b');
@@ -158,15 +158,15 @@ $t.hasClass = function(tag, classStr) {
  		
  	返回值：无
  * */
-$t.replaceClass = function(tag, oldStr, newStr) {
-	if(!tag) {
+$t.replaceClass = function (tag, oldStr, newStr) {
+	if (!tag) {
 		return;
 	} // 容错
 	var arr = tag.className.split(/\s+/), //这个正则表达式是因为class可以有多个,判断是否包含
 		leng = arr.length;
 	// 用数组的方式做判断是为了防止有类似 a aa aaa 的类名的情况
-	for(var i = 0; i < leng; i++) {
-		if(arr[i] == oldStr) {
+	for (var i = 0; i < leng; i++) {
+		if (arr[i] == oldStr) {
 			arr[i] = newStr;
 			break;
 		}
@@ -186,8 +186,8 @@ $t.replaceClass = function(tag, oldStr, newStr) {
  		pseudo [String] 伪元素  （传此参数可获取伪元素的样式 ，ie9以下不支持,默认 null）
  	返回值：[String]
  * */
-$t.getStyle = function(ele, prop, pseudo) {
-	if(!ele) {
+$t.getStyle = function (ele, prop, pseudo) {
+	if (!ele) {
 		return;
 	}
 	pseudo = pseudo || null;
@@ -209,51 +209,51 @@ $t.getStyle = function(ele, prop, pseudo) {
 	返回值：[String]
  * */
 $t.createRandomStr = function (leng, typeNum, isSymbol) {
-    var num = 97,
-        str = '',
-        startNum = 0,
-        endNum = 40869;
-    leng = leng === undefined ? 10 : leng; // 默认长度是 10
-    // 判断需要的类型
-    if (typeNum) {
-        var arr = ['', [48, 57],
-            [97, 122],
-            [65, 90],
-            [19968, 40869]
-        ];
-        startNum = arr[typeNum][0];
-        endNum = arr[typeNum][1];
-    }
+	var num = 97,
+		str = '',
+		startNum = 0,
+		endNum = 40869;
+	leng = leng === undefined ? 10 : leng; // 默认长度是 10
+	// 判断需要的类型
+	if (typeNum) {
+		var arr = ['', [48, 57],
+			[97, 122],
+			[65, 90],
+			[19968, 40869]
+		];
+		startNum = arr[typeNum][0];
+		endNum = arr[typeNum][1];
+	}
 
-    for (var i = 0; i < leng; i++) {
-        // 0 的情况 数字 、小写字母、大写字母
-        if (typeNum == 0) {
-            var arr1 = [
-                [48, 57],
-                [97, 122],
-                [65, 90]
-            ];
-            var indexNum = randomBasedSection(0, 2);
-            startNum = arr1[indexNum][0];
-            endNum = arr1[indexNum][1];
-        }
+	for (var i = 0; i < leng; i++) {
+		// 0 的情况 数字 、小写字母、大写字母
+		if (typeNum == 0) {
+			var arr1 = [
+				[48, 57],
+				[97, 122],
+				[65, 90]
+			];
+			var indexNum = randomBasedSection(0, 2);
+			startNum = arr1[indexNum][0];
+			endNum = arr1[indexNum][1];
+		}
 
-        num = randomBasedSection(startNum, endNum); // 生成一个指定区域的随机数
-        str += String.fromCharCode(num); // 根据传入的 ASCII编码生成对应的字符，可传多个值
+		num = randomBasedSection(startNum, endNum); // 生成一个指定区域的随机数
+		str += String.fromCharCode(num); // 根据传入的 ASCII编码生成对应的字符，可传多个值
 
-        // 带符号的情况 Math.random() > 0.7 是为了减少符号出现的频率
-        if(isSymbol && Math.random() > 0.7){
-            var arr2 = [
-                [32, 47], // 标点自1区(32是空格)
-                [58, 64], // 标点2区
-                [91, 96], // 标点3区
-                [123,126] // 标点4区
-            ];
-            var indexNum2 = randomBasedSection(0, 3);
-            str += String.fromCharCode(randomBasedSection(arr2[indexNum2][0], arr2[indexNum2][1]));
-        }
-    }
-    return str;
+		// 带符号的情况 Math.random() > 0.7 是为了减少符号出现的频率
+		if (isSymbol && Math.random() > 0.7) {
+			var arr2 = [
+				[32, 47], // 标点自1区(32是空格)
+				[58, 64], // 标点2区
+				[91, 96], // 标点3区
+				[123, 126] // 标点4区
+			];
+			var indexNum2 = randomBasedSection(0, 3);
+			str += String.fromCharCode(randomBasedSection(arr2[indexNum2][0], arr2[indexNum2][1]));
+		}
+	}
+	return str;
 };
 /*
 生成一个指定区域的随机数
@@ -262,7 +262,7 @@ $t.createRandomStr = function (leng, typeNum, isSymbol) {
 		big [Number]* 最大值
 	返回值：[Number]
  * */
-$t.randomBasedSection = function(small, big) {
+$t.randomBasedSection = function (small, big) {
 	return Math.round(Math.random() * (big - small) + small);
 };
 /*
@@ -272,10 +272,10 @@ $t.randomBasedSection = function(small, big) {
 		parentStr [String]* 基于的字符
 	返回值：[Array]
  * */
-$t.getIndexofArr = function(sonStr, parentStr) {
+$t.getIndexofArr = function (sonStr, parentStr) {
 	var i = 0,
 		arr = [];
-	while(parentStr.indexOf(sonStr, i) != -1) {
+	while (parentStr.indexOf(sonStr, i) != -1) {
 		arr.push(parentStr.indexOf(sonStr, i));
 		i = parentStr.indexOf(sonStr, i) + sonStr.length;
 	}
@@ -291,8 +291,8 @@ $t.getIndexofArr = function(sonStr, parentStr) {
 										如果想要更改，请搜索 '颜色取值范围' 关键字 去改源码
 	返回值：[String]
  * */
-$t.randomColor = function(clarityP, avoidP) {
-	if(!clarityP && clarityP != 0) {
+$t.randomColor = function (clarityP, avoidP) {
+	if (!clarityP && clarityP != 0) {
 		clarityP = 1;
 	}
 	let r = $t.randomBasedSection(0, 255);
@@ -300,13 +300,13 @@ $t.randomColor = function(clarityP, avoidP) {
 	let b = $t.randomBasedSection(0, 255);
 	let res = r + ',' + g + ',' + b;
 	// 是否要回避某个色值
-	if(avoidP) {
+	if (avoidP) {
 		let arr = avoidP.split(',');
 
 		let minN = (arr[2] - 55) <= 0 ? 0 : (arr[2] - 55); // 最小接近值
 		let maxN = (arr[2] + 55) >= 255 ? 255 : (arr[2] + 55); // 最大接近值
 		// 判断是否是需要回避的颜色 或者是否是接近 需要回避的颜色 颜色取值范围（上下55）
-		while(r == arr[0] && g == arr[1] && (b >= minN && b <= maxN)) {
+		while (r == arr[0] && g == arr[1] && (b >= minN && b <= maxN)) {
 			g = $t.randomBasedSection(0, 255);
 			b = $t.randomBasedSection(0, 255);
 			res = r + ',' + g + ',' + b;
@@ -319,8 +319,8 @@ $t.randomColor = function(clarityP, avoidP) {
  * 封装兼容所有浏览器的，获取页面滚动距离的方法
  * 返回值：[Object]
  */
-$t.getScrollOffset = function() {
-	if(window.pageXOffset) {
+$t.getScrollOffset = function () {
+	if (window.pageXOffset) {
 		return {
 			x: window.pageXOffset,
 			y: window.pageYOffset
@@ -336,14 +336,14 @@ $t.getScrollOffset = function() {
  * 封装兼容所有浏览器的，返回浏览器视口尺寸的方法
  * 返回值：[Object]
  */
-$t.getViewportOffset = function() {
-	if(window.innerWidth) {
+$t.getViewportOffset = function () {
+	if (window.innerWidth) {
 		return {
 			w: window.innerWidth,
 			h: window.innerHeight
 		}
 	} else {
-		if(document.compatMode === 'BackCompat') {
+		if (document.compatMode === 'BackCompat') {
 			return {
 				w: document.body.clientWidth,
 				h: document.body.clientHeight
@@ -369,14 +369,14 @@ $t.getViewportOffset = function() {
  	
  	返回值：无
  * */
-$t.addEvent = function(elem, type, handle, bool) {
+$t.addEvent = function (elem, type, handle, bool) {
 	bool = bool || false;
-	if(elem.addEventListener) {
+	if (elem.addEventListener) {
 		elem.addEventListener(type, handle, bool);
-	} else if(elem.attachEvent) {
-		if($t.getType(handle) == 'string') {
+	} else if (elem.attachEvent) {
+		if ($t.getType(handle) == 'string') {
 			// 为了在ie低版本下，即能把this指向目标元素，又能支持解除绑定的事件函数
-			elem['ie' + handle] = function(ev) {
+			elem['ie' + handle] = function (ev) {
 				handle.call(elem, ev);
 			}
 			elem.attachEvent('on' + type, elem['ie' + handle]);
@@ -398,10 +398,10 @@ $t.addEvent = function(elem, type, handle, bool) {
  		
  	返回值：无
  * */
-$t.removeEvent = function(elem, type, handleName, bool) {
-	if(elem.removeEventListener) {
+$t.removeEvent = function (elem, type, handleName, bool) {
+	if (elem.removeEventListener) {
 		elem.removeEventListener(type, handleName, bool);
-	} else if(elem.detachEvent) {
+	} else if (elem.detachEvent) {
 		elem.detachEvent('on' + type, 'ie' + handleName)
 	} else {
 		elem['on' + type] = null;
@@ -414,8 +414,8 @@ $t.removeEvent = function(elem, type, handleName, bool) {
  	
  	返回值：[Object] 兼容ie 触发事件的目标对象
  * */
-$t.cancelHandler = function(e) {
-	if(e.preventDefault) {
+$t.cancelHandler = function (e) {
+	if (e.preventDefault) {
 		e.preventDefault();
 	} else {
 		e.returnValue = false;
@@ -429,8 +429,8 @@ $t.cancelHandler = function(e) {
  	
  	返回值：[Object] 兼容ie 触发事件的目标对象
  * */
-$t.stopBubble = function(event) {
-	if(event.stopPropagation) {
+$t.stopBubble = function (event) {
+	if (event.stopPropagation) {
 		event.stopPropagation();
 	} else {
 		event.cancelBubble = true;
@@ -446,26 +446,26 @@ $t.stopBubble = function(event) {
  	
  	返回值：[String] 创建的script标签的id(为了防止耦合冲突 id中带有时间戳)
  * */
-$t.loadScript = function(ur, callback, errorBack) {
-	if(!ur) {
+$t.loadScript = function (ur, callback, errorBack) {
+	if (!ur) {
 		return;
 	} // 容错
 	var script = document.createElement('script');
 	script.type = 'text/javascript';
 	script.id = 'loadScript' + new Date().getTime();
-	if(script.readyState) {
+	if (script.readyState) {
 		// 兼容ie
-		script.onreadystatechange = function() {
-			if(script.readyState == 'complete' || script.readyState == 'loaded') {
+		script.onreadystatechange = function () {
+			if (script.readyState == 'complete' || script.readyState == 'loaded') {
 				callback && callback(); // 成功回调
 			}
 		}
 	} else {
-		script.onload = function() {
+		script.onload = function () {
 			callback && callback(); // 成功回调
 		}
 	}
-	script.onerror = function() {
+	script.onerror = function () {
 		errorBack && errorBack(); // 出错回调
 	}
 	script.src = ur; // 这行代码放在这，是为了避免js文件加载太快，无法监听到onreadystatechange或onload事件
@@ -481,12 +481,12 @@ $t.loadScript = function(ur, callback, errorBack) {
  									newArrr [Array] 去重后的新数组 
  									temp [Object] 记录了每一个重复的值在原数组中依次出现的索引 
  * */
-$t.unique = function(tagArr) {
+$t.unique = function (tagArr) {
 	let temp = {},
 		arr = [],
 		leng = tagArr.length;
-	for(let i = 0; i < leng; i++) {
-		if(temp[tagArr[i]] === undefined) {
+	for (let i = 0; i < leng; i++) {
+		if (temp[tagArr[i]] === undefined) {
 			temp[tagArr[i]] = i;
 			arr.push(tagArr[i])
 		} else {
@@ -505,8 +505,8 @@ $t.unique = function(tagArr) {
 		
  	返回值：[String]
  */
-$t.getType = function(target) {
-	let ret = typeof(target);
+$t.getType = function (target) {
+	let ret = typeof (target);
 	let template = {
 		'[object Array]': 'array',
 		'[object Object]': 'object',
@@ -514,9 +514,9 @@ $t.getType = function(target) {
 		'[object Boolean]': 'boolean - object', // 包装类对象
 		'[object String]': 'string - object' // 包装类对象
 	}
-	if(target === null) {
+	if (target === null) {
 		return 'null';
-	} else if(ret == 'object') {
+	} else if (ret == 'object') {
 		let str = Object.prototype.toString.call(target); // 主要是为了检测是否是包装类对象
 		return template[str];
 	} else {
@@ -534,9 +534,9 @@ $t.getType = function(target) {
 		
  	返回值：无
  */
-$t.insertAfter = function(targetNode, afterNode, parentNode) {
+$t.insertAfter = function (targetNode, afterNode, parentNode) {
 	var beforeNode = $t.getSiblings(afterNode, 1); // 兼容ie获取afterNode的下一个元素节点
-	if(beforeNode === null) {
+	if (beforeNode === null) {
 		parentNode.appendChild(targetNode);
 	} else {
 		parentNode.insertBefore(targetNode, beforeNode);
@@ -550,7 +550,7 @@ $t.insertAfter = function(targetNode, afterNode, parentNode) {
 		
  	返回值：[Object] 返回静态的元素几何尺寸,
  * */
-$t.getRect = function(ele) {
+$t.getRect = function (ele) {
 	var obj = {},
 		oRect = ele.getBoundingClientRect(),
 		top = document.documentElement.clientTop, // 非IE为0，IE为2
@@ -572,7 +572,7 @@ $t.getRect = function(ele) {
 		date : [Object] 日期对象 （默认时当前日期）
  	返回值：[Object] 带有年 月 周（0 表示 周日） 日 时 分 秒 毫秒
  * */
-$t.getDate = function(oDate) {
+$t.getDate = function (oDate) {
 	var d = oDate || new Date(),
 		obj = {
 			year: d.getFullYear(), // 年
@@ -600,11 +600,11 @@ $t.getDate = function(oDate) {
 * 
 返回值：[String]
 * */
-$t.dealBlank = function(str, deleteWay, sub) {
+$t.dealBlank = function (str, deleteWay, sub) {
 	deleteWay = deleteWay || 1;
 	sub = sub || "";
 	var result = str;
-	switch(deleteWay) {
+	switch (deleteWay) {
 		case 1:
 			result = str.replace(/(^\s+)|(\s+$)/g, sub);
 			break;
@@ -618,8 +618,8 @@ $t.dealBlank = function(str, deleteWay, sub) {
 		case 4:
 			result = result.replace(/[\s\n\t\r\v]/g, ' ');
 			var arr = result.split(' ');
-			var arr2 = arr.filter(function(item, index) {
-				if(item) {
+			var arr2 = arr.filter(function (item, index) {
+				if (item) {
 					return item
 				}
 			})
@@ -637,13 +637,13 @@ $t.dealBlank = function(str, deleteWay, sub) {
 		n [String]* 指定要查找的关键字，
  	返回值：[Object | String] 
  * */
-$t.getAddressParam = function(n) {
+$t.getAddressParam = function (n) {
 	var str = window.location.search.substr(1),
 		obj = {},
 		arr = str.split('&'),
 		leng = arr.length,
 		arr2 = [];
-	for(var i = 0; i < leng; i++) {
+	for (var i = 0; i < leng; i++) {
 		arr2 = arr[i].split('=');
 		obj[arr2[0]] = arr2[1];
 	}
@@ -658,7 +658,7 @@ $t.getAddressParam = function(n) {
 		t [Number] 要保留的时间(暂时仅支持以天为单位,默认临时存储)，
  	返回值：无 
  * */
-$t.setCooki = function(att, prop, t) {
+$t.setCooki = function (att, prop, t) {
 	var oDate = new Date();
 	oDate.setDate(oDate.getDate() + t); // 计算有效时间
 	prop = encodeURI(prop); // 编码处理 防止由特殊字符的情况
@@ -671,12 +671,12 @@ $t.setCooki = function(att, prop, t) {
 		att [String]* 指定要查找的关键字，
  	返回值：[Object | String] 
  * */
-$t.getCooki = function(att) {
+$t.getCooki = function (att) {
 	var arr1 = document.cookie.split('; '),
 		leng = arr1.length,
 		arr2 = [],
 		obj = {};
-	for(var i = 0; i < leng; i++) {
+	for (var i = 0; i < leng; i++) {
 		arr2 = arr1[i].split('=');
 		obj[arr2[0]] = decodeURI(arr2[1]); // 解码存储
 	}
@@ -692,14 +692,14 @@ $t.getCooki = function(att) {
 		mastExec : [Number] 最大间隔时间（毫秒）
  	返回值：[Function] (默认使用...语法糖接受参数，低版本浏览器可使用arguments或根据不同情况设置参数)
  * */
-$t.reduceDealWith = function(fn, delay, mastExec) {
+$t.reduceDealWith = function (fn, delay, mastExec) {
 	var timer = null,
 		lastTime = new Date();
-	return function(...arg) {
+	return function (...arg) {
 		var now = new Date();
 		clearTimeout(timer);
-		if(now - lastTime < mastExec) {
-			timer = setTimeout(function() {
+		if (now - lastTime < mastExec) {
+			timer = setTimeout(function () {
 				fn(...arg);
 			}, delay)
 		} else {
@@ -708,6 +708,18 @@ $t.reduceDealWith = function(fn, delay, mastExec) {
 		}
 	}
 };
+// 简洁写法
+// const throttle = function(event) {
+// 	let timerid = null
+// 	return function() {
+// 	  if (!timerid) {
+// 		timerid = setTimeout(() => {
+// 		  event()
+// 		  timerid = null
+// 		}, 100)
+// 	  }
+// 	}
+//   }
 /*
 碰撞检测函数封装：
 	注意：
@@ -718,10 +730,10 @@ $t.reduceDealWith = function(fn, delay, mastExec) {
 		
  	返回值：[Boolean]
  * */
-$t.isCollision = function(moveEle, tagEle) {
+$t.isCollision = function (moveEle, tagEle) {
 	var mRect = $t.getRect(moveEle),
 		tRect = $t.getRect(tagEle);
-	if(
+	if (
 		mRect.top > tRect.bottom ||
 		tRect.top > mRect.bottom ||
 		tRect.left > mRect.right ||
@@ -740,8 +752,8 @@ $t.isCollision = function(moveEle, tagEle) {
 		cn : [String] 连接符 (默认 :)
  	返回值：[String]
  * */
-$t.timeFormat = function(t, cn) {
-	if(!t) {
+$t.timeFormat = function (t, cn) {
+	if (!t) {
 		return;
 	}
 	t = Math.floor(t);
@@ -758,7 +770,7 @@ $t.timeFormat = function(t, cn) {
 		num : [Number]* 数字
  	返回值：[String]
  * */
-$t.toZero = function(num) {
+$t.toZero = function (num) {
 	num = (num <= 9 ? '0' + num : num);
 	return num;
 }
@@ -768,8 +780,8 @@ $t.toZero = function(num) {
 	参数：
  	返回值：[String]
  * */
-$t.getSelectPageTxt = function() {
-	if(document.selection) {
+$t.getSelectPageTxt = function () {
+	if (document.selection) {
 		return document.selection.createRange().text; // ie
 	} else {
 		return window.getSelection().toString(); // 标准
@@ -784,19 +796,19 @@ $t.getSelectPageTxt = function() {
 		mo : [Number]  模式：1-四舍五入，2-向下取整，3-向上取整（默认1）
  	返回值：[Number]
  * */
-$t.dealDecimal = function(num, dig, mo) {
-	if(!num) {
+$t.dealDecimal = function (num, dig, mo) {
+	if (!num) {
 		console.error('num 无效!');
 		return;
 	}
-	if(typeof(num) != 'number' && isNaN(Number(num))) {
+	if (typeof (num) != 'number' && isNaN(Number(num))) {
 		console.error('num 不是一个数字!');
 		return;
 	}
 	dig = dig || 2;
 	mo = mo || 1;
 	var i = Math.pow(10, dig);
-	switch(mo) {
+	switch (mo) {
 		case 1:
 			num = Math.round(num * i) / i;
 			break;
@@ -825,17 +837,17 @@ hsl色值转rgb色值函数：
 			 g [Number] 绿,
 			 b [Number] 蓝,
  * */
-$t.hslToRgb = function(h, s, l) {
+$t.hslToRgb = function (h, s, l) {
 	var r, g, b;
-	if(s == 0) {
+	if (s == 0) {
 		r = g = b = l; // achromatic
 	} else {
 		var hue2rgb = function hue2rgb(p, q, t) {
-			if(t < 0) t += 1;
-			if(t > 1) t -= 1;
-			if(t < 1 / 6) return p + (q - p) * 6 * t;
-			if(t < 1 / 2) return q;
-			if(t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+			if (t < 0) t += 1;
+			if (t > 1) t -= 1;
+			if (t < 1 / 6) return p + (q - p) * 6 * t;
+			if (t < 1 / 2) return q;
+			if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
 			return p;
 		}
 		var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
@@ -859,17 +871,17 @@ rgb色值转hsl色值函数：
 			l : [Number] 亮度
 			
  * */
-$t.rgbToHsl = function(r, g, b) {
+$t.rgbToHsl = function (r, g, b) {
 	r /= 255, g /= 255, b /= 255;
 	var max = Math.max(r, g, b),
 		min = Math.min(r, g, b);
 	var h, s, l = (max + min) / 2;
-	if(max == min) {
+	if (max == min) {
 		h = s = 0; // achromatic
 	} else {
 		var d = max - min;
 		s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-		switch(max) {
+		switch (max) {
 			case r:
 				h = (g - b) / d + (g < b ? 6 : 0);
 				break;
@@ -892,27 +904,27 @@ $t.rgbToHsl = function(r, g, b) {
 	返回值：[Object]
 			
  * */
-$t.getMaxFromStr = function(str) {
+$t.getMaxFromStr = function (str) {
 	var leng = str.length,
 		obj = {},
 		max = 0,
 		moreKey = str.charAt(0);
 	for (var i = 0; i < leng; i++) {
-		if(obj[ str.charAt(i) ]) {
-			obj[ str.charAt(i) ]++;
+		if (obj[str.charAt(i)]) {
+			obj[str.charAt(i)]++;
 		} else {
-			obj[ str.charAt(i) ] = 1;
+			obj[str.charAt(i)] = 1;
 		}
-		if(max < obj[ str.charAt(i) ]) {
-			max = obj[ str.charAt(i) ];
+		if (max < obj[str.charAt(i)]) {
+			max = obj[str.charAt(i)];
 			moreKey = str.charAt(i);
 		}
 	}
-	
+
 	return {
-		maxNum : max,
-		moreKey :moreKey,
-		obj : obj
+		maxNum: max,
+		moreKey: moreKey,
+		obj: obj
 	};
 }
 
@@ -956,15 +968,15 @@ input框内容改变事件兼容性封装：
 		callBack [Function] 回调函数
  	返回值：无
  * */
-$e.inputChangeEv = function(otag, callBack) {
-	if(!-[1, ]) {
+$e.inputChangeEv = function (otag, callBack) {
+	if (!-[1, ]) {
 		// ie
-		otag.onpropertychange = function() {
+		otag.onpropertychange = function () {
 			callBack & callBack();
 		}
 	} else {
 		// 标准
-		otag.oninput = function() {
+		otag.oninput = function () {
 			callBack & callBack();
 		}
 	}
@@ -987,8 +999,8 @@ var $u = {};
 			callBack : ,  [Function] 结束的回调函数
 		}
  * */
-$u.doMove = function(oConfig) {
-	if(!oConfig || !oConfig.ele) {
+$u.doMove = function (oConfig) {
+	if (!oConfig || !oConfig.ele) {
 		return;
 	}
 	clearInterval(oConfig.ele.doMovetTimer); // 1,防止重复开启定时器(越点越快) clear清除null或未定义 不会报错
@@ -999,16 +1011,16 @@ $u.doMove = function(oConfig) {
 	oConfig.tagPoint = oConfig.tagPoint === undefined ? 0 : oConfig.tagPoint;
 
 	// 判断并决定方向
-	if(parseInt($t.getStyle(oConfig.ele, oConfig.att)) > oConfig.tagPoint) {
+	if (parseInt($t.getStyle(oConfig.ele, oConfig.att)) > oConfig.tagPoint) {
 		oConfig.dir = -oConfig.dir
 	}
 
 	// 2,把定时器存到目标元素身上，可减少变量申明，节省空间，提高性能
-	oConfig.ele.doMovetTimer = setInterval(function() {
+	oConfig.ele.doMovetTimer = setInterval(function () {
 		var speed = parseInt($t.getStyle(oConfig.ele, oConfig.att)) + oConfig.dir;
 
 		// 3,最精准地保证移动元素能走到指定的位置，并且不出现被拉回的bug
-		if(speed > oConfig.tagPoint && oConfig.dir > 0 || speed < oConfig.tagPoint && oConfig.dir < 0) {
+		if (speed > oConfig.tagPoint && oConfig.dir > 0 || speed < oConfig.tagPoint && oConfig.dir < 0) {
 			speed = oConfig.tagPoint;
 		}
 
@@ -1017,7 +1029,7 @@ $u.doMove = function(oConfig) {
 		oConfig.callIn && oConfig.callIn(); // 执行 进行中的回调函数
 
 		// 3,最精准地保证移动元素能走到800的位置，并且不出现被拉回的bug
-		if(speed == oConfig.tagPoint) {
+		if (speed == oConfig.tagPoint) {
 			clearInterval(oConfig.ele.doMovetTimer);
 			oConfig.callBack && oConfig.callBack(); // 执行 结束回调函数
 		}
@@ -1041,9 +1053,9 @@ $u.doMove = function(oConfig) {
 			callBack : ,  [Function] 结束的回调函数
 		}
  * */
-$u.shake = function(oConfig) {
+$u.shake = function (oConfig) {
 	// 在上次抖动还没结束时，不进行任何操作，防止获取初始位置不准确的bug
-	if(!oConfig || !oConfig.ele || oConfig.ele.shakeTimer) {
+	if (!oConfig || !oConfig.ele || oConfig.ele.shakeTimer) {
 		return;
 	}
 	// 设置默认值
@@ -1058,17 +1070,17 @@ $u.shake = function(oConfig) {
 	var arr = [];
 	var num = 0;
 	// 生成抖动所依赖的由一正一负的数字组成的 数组
-	for(var i = oConfig.scope; i > 0; i -= oConfig.frequency) {
+	for (var i = oConfig.scope; i > 0; i -= oConfig.frequency) {
 		arr.push(i, -i);
 	}
 	arr.push(0); // 在数组最后填入0，否则回不到原位置
 	var leng = arr.length;
 	// 开启间隔定时器
-	oConfig.ele.shakeTimer = setInterval(function() {
+	oConfig.ele.shakeTimer = setInterval(function () {
 		oConfig.ele.style[oConfig.att] = oConfig.startValue + arr[num] + 'px';
 		num++;
 		oConfig.callIn && oConfig.callIn(); // 进行中的回调函数
-		if(num == leng) {
+		if (num == leng) {
 			clearInterval(oConfig.ele.shakeTimer);
 			oConfig.ele.shakeTimer = null; // 设为null，用于判断当前抖动是否结束（以防止获取初始位置不准确的bug）
 			num = 0;
@@ -1105,8 +1117,8 @@ oConfig {
  								param4 : 鼠标y轴坐标值
  }
  * */
-$u.downMoveUp = function(oConfig) {
-	if(!oConfig || !oConfig.ele) {
+$u.downMoveUp = function (oConfig) {
+	if (!oConfig || !oConfig.ele) {
 		return;
 	} // 限制必有条件
 
@@ -1132,12 +1144,12 @@ $u.downMoveUp = function(oConfig) {
 		$t.cancelHandler(ev); // 阻止默认事件
 		$t.stopBubble(ev); // 阻止冒泡
 
-		if(oConfig.ele.setCapture) {
+		if (oConfig.ele.setCapture) {
 			oConfig.ele.setCapture(); // 设置全局捕获，阻止ie低版本下，文字或图片的默认拖拽行为，
 		}
 
 		// 获取相关尺寸
-		if(oConfig.positionParent) {
+		if (oConfig.positionParent) {
 			var parentW = parseInt($t.getStyle(oConfig.positionParent, 'width')),
 				parentH = parseInt($t.getStyle(oConfig.positionParent, 'height'));
 		} else {
@@ -1171,16 +1183,16 @@ $u.downMoveUp = function(oConfig) {
 			resT = starrT + disY, // x轴最终位置值
 			resL = startL + disX; // y轴最终位置值
 
-		if(resT < minT) {
+		if (resT < minT) {
 			resT = minT;
 		} // 限制上部最大偏移量
-		if(resL < minL) {
+		if (resL < minL) {
 			resL = minL;
 		} // 限制左侧最大偏移量
-		if(resT > maxT) {
+		if (resT > maxT) {
 			resT = maxT;
 		} // 限制下部最大偏移量
-		if(resL > maxL) {
+		if (resL > maxL) {
 			resL = maxL;
 		} // 限制右侧最大偏移量
 
@@ -1192,7 +1204,7 @@ $u.downMoveUp = function(oConfig) {
 		maxT = 0; // 防止数据叠加
 		maxL = 0; // 防止数据叠加
 
-		if(oConfig.ele.releaseCapture) {
+		if (oConfig.ele.releaseCapture) {
 			oConfig.ele.releaseCapture(); // 释放全局捕获
 		}
 
@@ -1218,8 +1230,8 @@ $u.downMoveUp = function(oConfig) {
  	可直接调用的事件：
  		destroyFn : 销毁滚轮事件
  * */
-$u.MouseRoller = function(oConfig) {
-	if(!oConfig || !oConfig.ele) {
+$u.MouseRoller = function (oConfig) {
+	if (!oConfig || !oConfig.ele) {
 		return;
 	}
 	oConfig.bool = oConfig.bool || false;
@@ -1227,21 +1239,21 @@ $u.MouseRoller = function(oConfig) {
 	// 向上滚动
 	_this.rollerUp = {
 		callBack: null,
-		doing: function() {
+		doing: function () {
 			this.callBack && this.callBack();
 		}
 	};
 	// 向下滚动
 	_this.rollerDown = {
 		callBack: null,
-		doing: function() {
+		doing: function () {
 			this.callBack && this.callBack();
 		}
 	};
 	// 滚轮处理函数
-	_this.handleFn = function(e) {
+	_this.handleFn = function (e) {
 
-		if((e.wheelDelta && e.wheelDelta > 0) || (e.detail && e.detail < 0)) {
+		if ((e.wheelDelta && e.wheelDelta > 0) || (e.detail && e.detail < 0)) {
 			_this.rollerUp.doing();
 		} else {
 			_this.rollerDown.doing();
@@ -1250,18 +1262,18 @@ $u.MouseRoller = function(oConfig) {
 		$t.stopBubble(e);
 	}
 	// 兼容性绑定事件
-	if(oConfig.ele.onmousewheel !== undefined) {
+	if (oConfig.ele.onmousewheel !== undefined) {
 		$t.addEvent(oConfig.ele, 'mousewheel', _this.handleFn, oConfig.bool);
 	} else {
 		oConfig.ele.addEventListener('DOMMouseScroll', _this.handleFn, oConfig.bool)
 	}
 	// 模拟监听事件，处理相应的函数
-	_this.on = function(evType, handle) {
+	_this.on = function (evType, handle) {
 		_this[evType].callBack = handle;
 	}
 	// 销毁滚轮事件
-	_this.destroyFn = function() {
-		if(oConfig.ele.onmousewheel !== undefined) {
+	_this.destroyFn = function () {
+		if (oConfig.ele.onmousewheel !== undefined) {
 			$t.removeEvent(oConfig.ele, 'mousewheel', _this.handleFn, oConfig.bool);
 		} else {
 			oConfig.ele.removeEventListener('DOMMouseScroll', _this.handleFn, oConfig.bool)
