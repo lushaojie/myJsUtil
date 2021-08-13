@@ -7,7 +7,9 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
 	<style>
-
+		div{
+			color:  rgb(136, 138, 255);
+		}
 	</style>
 </head>
 
@@ -42,8 +44,29 @@
 	// 	])
 	// }
 
+	function unique(tagArr, key) {
+		let temp = {},
+			arr = [],
+			leng = tagArr.length;
+		for (let i = 0; i < leng; i++) {
+			let item = tagArr[i];
+			if(key && typeof(tagArr[i]) === 'object'){
+				item = tagArr[i][key];
+			}
+			
+			if (temp[item] === undefined) {
+				temp[item] = i;
+				arr.push(tagArr[i])
+			} else {
+				temp[item] += '-' + i;
+			}
+		}
+		return arr;
+	}
+	const arr = [ 'a', {name: 'a', age: 20}, {name: 'b', age: 21}, 'b', 20, {name: 'a', age: 21}, 21, {name: 'b', age: 20} ]
+	const res = unique(arr, 'name');
+	console.log( res )
 	
-
 </script>
 
 </html>
